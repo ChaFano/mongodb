@@ -1,9 +1,11 @@
 package com.chafan.service.impl;
 
-import com.chafan.entity.DbName;
+import com.chafan.entity.DbTree;
 import com.chafan.entity.NodeInformation;
 import com.chafan.service.NodeInfoService;
 import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -61,12 +63,28 @@ public class NodeInfoServiceImpl implements NodeInfoService {
      * @return
      */
     @Override
-    public List<DbName> getAllDatabases() {
+    public List<DbTree> getAllDatabases() {
         Document result = mongoTemplate.executeCommand("{ listDatabases: 1 }");
 
         List<Document> databases = (List<Document>) result.get("databases");
         // 返回数据库名的列表
-        return databases.stream().map(db -> new DbName(db.getString("name"))).collect(Collectors.toList());
+        return databases.stream().map(db -> {
+
+            DbTree tree = new DbTree();
+            MongoDatabase database = mongoClient.getDatabase(db.getString("name"));
+            tree.setTitle(db.getString("name"));
+
+            MongoIterable<String> collections = database.listCollectionNames();
+
+            List<DbTree> list = new ArrayList<>();
+            for (String collection : collections) {
+                DbTree dbTree = new DbTree();
+                dbTree.setTitle(collection);
+                list.add(dbTree);
+            }
+            tree.setChildren(list);
+            return tree;
+        }).collect(Collectors.toList());
     }
 
 

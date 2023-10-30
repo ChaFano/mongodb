@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
-
     <header th:replace="header.html"></header>
+
 </head>
 
 <script id="TPL" type="text/html">
+
     {{# layui.each(d, function(index, item){ }}
-    <div class="layui-col-md3">
+
+    <div class="layui-col-md2">
+
         <div class="layui-card">
-            <div class="layui-card-header">结点：<span>{{-item.id}}</span></div>
+            <div class="layui-card-header" style="background-color: #009f95">
+                <h4>结点：<span>{{-item.id}}</span></h4></div>
             <div class="layui-card-body">
                 ip：<span id="ip{{-item.id}}">{{-item.name}}</span></br>
                 health：<span id="health">{{-item.health}}</span></br>
@@ -27,11 +31,21 @@
         {{# } }}</p>
 </script>
 
-<body>
-<div class="layui-bg-gray" style="padding: 16px;">
-    <div id="view" class="layui-row layui-col-space15">
+<body class="layui-layout-body">
+
+    <div class="layui-body" style="margin:40px 0 0 10px ">
+
+        <div class="layui-bg-gray" style="padding: 16px;">
+            <h2>副本集节点信息</h2>
+            <div id="view" class="layui-row layui-col-space12">
+            </div>
+        </div>
+
+        <h2>数据库信息</h2>
+        <div id="ID-tree-demo" style="font-size:20px"></div>
+
     </div>
-</div>
+
 </body>
 
 
@@ -39,10 +53,13 @@
     layui.use(function () {
         var laytpl = layui.laytpl;
         var $ = layui.$;
-        var form = layui.form;
         var layer = layui.layer;
-        var data;
-        // 渲染
+        var form = layui.form;
+        var tree = layui.tree;
+        var nodedata;
+        var databases;
+
+        // 渲染 副本集节点信息
         $(function () {
             $.ajax({
                 type: "get",
@@ -51,12 +68,43 @@
                 success: function (res) {
                     console.log(res);
                     if (res.code === 0) {
-                        data = res.data
+
+                        nodedata = res.data
                         var getTpl = document.getElementById('TPL').innerHTML; // 获取模板字符
                         var elemView = document.getElementById('view'); // 视图对象
+
                         // 渲染并输出结果
-                        laytpl(getTpl).render(data, function (str) {
+                        laytpl(getTpl).render(nodedata, function (str) {
                             elemView.innerHTML = str;
+                        });
+                    }
+                }
+            })
+        })
+
+        // 树形结构渲染
+        $(function () {
+            $.ajax({
+                type: "get",
+                url: "/api/node/getAllDatabases",
+                // async: false,
+                success: function (res) {
+                    console.log(res);
+                    if (res.code === 0) {
+
+                        databases = res.data
+                        // 渲染
+                        tree.render({
+                            elem: '#ID-tree-demo',
+                            data: databases,
+                            showCheckbox: true,  // 是否显示复选框
+                            onlyIconControl: true,  // 是否仅允许节点左侧图标控制展开收缩
+                            id: 'demo-id-1',
+                            isJump: true, // 是否允许点击节点时弹出新窗口跳转
+                            click: function(obj){
+                                var data = obj.data;  //获取当前点击的节点数据
+                                layer.msg('状态：'+ obj.state + '<br>节点数据：' + JSON.stringify(data));
+                            }
                         });
                     }
                 }
@@ -79,7 +127,10 @@
             var ip = document.getElementById('ip3').innerText;
             layer.msg("当前结点ip：" + ip);
         });
+
+
     });
+
 </script>
 
 </html>

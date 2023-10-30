@@ -1,6 +1,6 @@
 package com.chafan.service;
 
-import com.chafan.entity.DbName;
+import com.chafan.entity.DbTree;
 import com.chafan.entity.NodeInformation;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public interface NodeInfoService {
      * 获取有哪些数据库
      * @return
      */
-    List<DbName> getAllDatabases();
+    List<DbTree> getAllDatabases();
 
 
 

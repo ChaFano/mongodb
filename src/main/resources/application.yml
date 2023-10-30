@@ -2,6 +2,16 @@ server:
   port: 8081
 
 spring:
+  thymeleaf:
+    cache: false
+    servlet:
+      content-type: text/html
+    mode: LEGACYHTML5
+  mvc:
+    static-path-pattern: /static/**
+    view:
+      prefix: classpath:/templates
+      suffix: .html
   data:
     mongodb:
       uri: mongodb://203.33.207.171:28011,203.33.207.171:28012,203.33.207.171:28013,203.33.207.171:28014/admin?replicaSet=RPS_TEST1&slaveOk=true&write=1&readPreference=secondaryPreferred&connectTimeoutMS=300000

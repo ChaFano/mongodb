@@ -2,10 +2,17 @@ package com.chafan.controller;
 
 import com.chafan.service.NodeInfoService;
 import com.chafan.util.R;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * @Auther: 茶凡
@@ -21,13 +28,18 @@ public class NodeInfoServiceController {
     @Autowired
     NodeInfoService nodeInfoService;
 
+    @Autowired
+    MongoTemplate mongoTemplate;
+
+    @Autowired
+    MongoClient mongoClient;
+
     /**
      * 查询副本集有各个节点的信息
      * @return
      */
     @GetMapping("/getReplicaSetInfo")
     public R getReplicaSetInfo(){
-
         return R.ok().setData(nodeInfoService.getReplicaSetInfo());
     }
 
@@ -41,7 +53,11 @@ public class NodeInfoServiceController {
     }
 
 
-
+    @GetMapping("/getCollectionNames")
+    public MongoIterable<String> getCollectionNames(){
+        MongoDatabase database = mongoClient.getDatabase("db01");
+        return  database.listCollectionNames();
+    }
 
 
 }

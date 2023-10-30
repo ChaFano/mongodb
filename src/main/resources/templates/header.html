@@ -9,9 +9,86 @@
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 
-<link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+<link rel="stylesheet" th:href="@{/static/layui/css/layui.css}" media="all">
 
-<script type="text/javascript" th:src="@{/layui/layui.js}" media="all"></script>
-<script type="text/javascript" th:src="@{/layui/js/jquery-3.3.1.min.js}" media="all"></script>
+<script type="text/javascript" th:src="@{/static/layui/layui.js}" media="all"></script>
+<script type="text/javascript" th:src="@{/static/layui/js/jquery-3.3.1.min.js}" media="all"></script>
+
+
+<style type="text/css">
+
+
+
+
+
+
+</style>
+
+
+<body>
+<header th:fragment="header">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo layui-hide-xs layui-bg-black">
+                <p>MongoDB副本集验证</p>
+            </div>
+
+            <!-- 头部区域（可配合layui 已有的水平导航） 显示在左边-->
+            <ul class="layui-nav layui-layout-left">
+                <!-- 移动端显示 -->
+                <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                    <i class="layui-icon layui-icon-spread-left"></i>
+                </li>
+            </ul>
+
+            <!-- 显示在右边 -->
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+                    <a href="javascript:;">
+                        <img src="https://564762034-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MGP1hmjbQxtuPtZp3IX%2Fuploads%2Fgit-blob-21f15d8ea30776f761e27910725d744d0e8f0048%2Ffan-yi-wen-dang-tu-pian-.png?alt=media" class="layui-nav-img">
+                        mongo
+                    </a>
+
+                    <!-- 设置登录退出的地方 -->
+<!--                    <dl class="layui-nav-child">-->
+<!--                        <dd><a href="/about">个人小屋</a></dd>-->
+<!--                        <dd><a href="">退出</a></dd>-->
+<!--                    </dl>-->
+
+                </li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll "  >
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree " lay-filter="test">
+
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <!-- 展开作用不加超链接-->
+                        <a class="" href="javascript:;">系统管理</a>
+
+                        <dl class="layui-nav-child">
+                            <dd><a href="/index">副本节点信息</a></dd>
+                            <dd><a href="/findPage">数据查询</a></dd>
+                        </dl>
+
+                    </li>
+
+<!--                    <li class="layui-nav-item">-->
+<!--                        &lt;!&ndash; 展开作用不加超链接&ndash;&gt;-->
+<!--                        <a href="javascript:;">数据分析</a>-->
+<!--                        <dl class="layui-nav-child">-->
+<!--                            <dd><a href="">年级</a></dd>-->
+<!--                            <dd><a href="">班级</a></dd>-->
+<!--                        </dl>-->
+<!--                    </li>-->
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>>
+</body>
 
 </html>
