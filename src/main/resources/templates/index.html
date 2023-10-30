@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+
+    <header th:replace="header.html"></header>
+</head>
+
+<script id="TPL" type="text/html">
+    {{# layui.each(d, function(index, item){ }}
+    <div class="layui-col-md3">
+        <div class="layui-card">
+            <div class="layui-card-header">结点：<span>{{-item.id}}</span></div>
+            <div class="layui-card-body">
+                ip：<span>{{-item.name}}</span></br>
+                health：<span>{{-item.health}}</span></br>
+                state：<span>{{-item.state}}</span></br>
+                stateStr：<span>{{-item.stateStr}}</span></br>
+            </div>
+        </div>
+    </div>
+    {{# }); }}
+    <p>{{# if(d.length === 0){ }}
+        无数据
+        {{# } }}</p>
+</script>
+
+<body>
+<div class="layui-bg-gray" style="padding: 16px;">
+    <div id="view" class="layui-row layui-col-space15">
+    </div>
+</div>
+</body>
+
+
+<script type="text/javascript">
+    layui.use(function () {
+        var laytpl = layui.laytpl;
+        var $ = layui.$;
+        var form = layui.form;
+        var layer = layui.layer;
+        // 渲染
+        // var data = [
+        //     {
+        //         id: "0",
+        //         name: "203.33.207.171:28011",
+        //         health: "1.0",
+        //         state: "1",
+        //         stateStr: "PRIMARY"
+        //     },
+        //     {
+        //         id: "1",
+        //         name: "203.33.207.171:28011",
+        //         health: "1.0",
+        //         state: "2",
+        //         stateStr: "SECONDARY"
+        //     },
+        //     {
+        //         id: "2",
+        //         name: "203.33.207.171:28011",
+        //         health: "1.0",
+        //         state: "7",
+        //         stateStr: "ARBITER"
+        //     },
+        // ]
+        var data = function (){
+            $.ajax({
+                type:"",
+                url:"",
+                success:function (res){
+                    if(res.code === 0){
+                        return res.data
+                    }
+                }
+            })
+        }
+
+        var getTpl = document.getElementById('TPL').innerHTML; // 获取模板字符
+        var elemView = document.getElementById('view'); // 视图对象
+        // 渲染并输出结果
+        laytpl(getTpl).render(data, function (str) {
+            elemView.innerHTML = str;
+        });
+    });
+
+</script>
+
+</html>
