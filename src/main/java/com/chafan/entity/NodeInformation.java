@@ -6,7 +6,7 @@ package com.chafan.entity;
  * @date 2023/10/30 8:42
  * @Description 节点详细信息
  */
-public class NodeInfo {
+public class NodeInformation {
 
     private String id;
     private String name;
@@ -14,10 +14,10 @@ public class NodeInfo {
     private String state;
     private String stateStr;
 
-    public NodeInfo() {
+    public NodeInformation() {
     }
 
-    public NodeInfo(String id, String name, String health, String state, String stateStr) {
+    public NodeInformation(String id, String name, String health, String state, String stateStr) {
         this.id = id;
         this.name = name;
         this.health = health;

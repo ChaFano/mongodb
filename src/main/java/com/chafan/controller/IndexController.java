@@ -1,18 +1,11 @@
 package com.chafan.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.chafan.entity.Book;
-import com.chafan.entity.NodeInfo;
+import com.chafan.entity.NodeInformation;
 import com.chafan.util.RandomBookTitleGenerator;
 import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoIterable;
-import com.mongodb.connection.ServerDescription;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.mongo.MongoClientFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -21,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -46,7 +37,10 @@ public class IndexController {
     RandomBookTitleGenerator titleGenerator;
 
 
-
+    /*
+    *
+    * 获取集合的单挑数据
+    * */
     @GetMapping("/getOneBook")
     public Book getOneBook(){
 
@@ -55,12 +49,18 @@ public class IndexController {
         return book;
     }
 
+    /*
+    * 获取集合的所有数据
+    * */
     @GetMapping("/getBookList")
     public List<Book> getBookList(){
         List<Book> bookList = mongoTemplate.findAll(Book.class,"book");
         return bookList;
     }
 
+    /*
+    * 插入数据
+    * */
     @GetMapping("/insertBook")
     public boolean insertBook(){
         for (int i = 0; i <100 ; i++) {
@@ -71,41 +71,15 @@ public class IndexController {
     }
 
 
-    @GetMapping("/getReplicaSetInfo")
-    public String getReplicaSetInfo() {
-        Document result = mongoTemplate.executeCommand("{ replSetGetStatus: 1 }");
-        List<Document> members = (List<Document>) result.get("members");
-        List<NodeInfo> nodeInfos = new ArrayList<>();
-        members.stream().forEach(e-> {
-            nodeInfos.add(new NodeInfo(
-                    e.get("_id").toString(),
-                    e.get("name").toString(),
-                    e.get("health").toString(),
-                    e.get("state").toString(),
-                    e.get("stateStr").toString()
-            ));
-        });
 
-        return nodeInfos.toString();
-    }
-
-
-
-    @GetMapping("/getAllDatabases")
-    public List<String> getAllDatabases() {
-
-        Document result = mongoTemplate.executeCommand("{ listDatabases: 1 }");
-        List<Document> databases = (List<Document>) result.get("databases");
-        // 返回数据库名的列表
-        return databases.stream().map(db -> db.getString("name")).collect(Collectors.toList());
-    }
 
 
     @Autowired
     private MongoClient mongoClient; // 自动注入MongoClient
 
     /*
-    * 动态切换数据库查询数据库中的数据
+    * 动态切换数据库 查询数据库中的数据
+    * 用于在 查询非 admin 数据库的其他信息
     * */
     @GetMapping("/performOperationInDatabase")
     public List<Book> performOperationInDatabase(String databaseName, String collectionName) {
