@@ -1,2 +1,2 @@
 # mongodb
-MongoDB 发一本叫验证
+MongoDB 副本集验证
