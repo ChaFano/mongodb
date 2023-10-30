@@ -13,11 +13,12 @@
         <div class="layui-card">
             <div class="layui-card-header">结点：<span>{{-item.id}}</span></div>
             <div class="layui-card-body">
-                ip：<span>{{-item.name}}</span></br>
-                health：<span>{{-item.health}}</span></br>
-                state：<span>{{-item.state}}</span></br>
-                stateStr：<span>{{-item.stateStr}}</span></br>
+                ip：<span id="ip{{-item.id}}">{{-item.name}}</span></br>
+                health：<span id="health">{{-item.health}}</span></br>
+                state：<span id="state">{{-item.state}}</span></br>
+                stateStr：<span id="stateStr">{{-item.stateStr}}</span></br>
             </div>
+            <button id="selectBtn{{-item.id}}" type="button" class="layui-btn layui-btn-radius">查询</button>
         </div>
     </div>
     {{# }); }}
@@ -40,57 +41,45 @@
         var $ = layui.$;
         var form = layui.form;
         var layer = layui.layer;
-        var data ;
+        var data;
         // 渲染
-        // var data = [
-        //     {
-        //         id: "0",
-        //         name: "203.33.207.171:28011",
-        //         health: "1.0",
-        //         state: "1",
-        //         stateStr: "PRIMARY"
-        //     },
-        //     {
-        //         id: "1",
-        //         name: "203.33.207.171:28011",
-        //         health: "1.0",
-        //         state: "2",
-        //         stateStr: "SECONDARY"
-        //     },
-        //     {
-        //         id: "2",
-        //         name: "203.33.207.171:28011",
-        //         health: "1.0",
-        //         state: "7",
-        //         stateStr: "ARBITER"
-        //     },
-        // ]
-
-        $(
-            function (){
-                $.ajax({
-                    type:"get",
-                    url:"/api/node/getReplicaSetInfo",
-                    async: false,
-                    success:function (res){
-                        console.log(res);
-                        if(res.code === 0){
-                            data =  res.data
-                            var getTpl = document.getElementById('TPL').innerHTML; // 获取模板字符
-                            var elemView = document.getElementById('view'); // 视图对象
-                            // 渲染并输出结果
-                            laytpl(getTpl).render(data, function (str) {
-                                elemView.innerHTML = str;
-                            });
-                        }
+        $(function () {
+            $.ajax({
+                type: "get",
+                url: "/api/node/getReplicaSetInfo",
+                // async: false,
+                success: function (res) {
+                    console.log(res);
+                    if (res.code === 0) {
+                        data = res.data
+                        var getTpl = document.getElementById('TPL').innerHTML; // 获取模板字符
+                        var elemView = document.getElementById('view'); // 视图对象
+                        // 渲染并输出结果
+                        laytpl(getTpl).render(data, function (str) {
+                            elemView.innerHTML = str;
+                        });
                     }
-                })
-            }
-        )
+                }
+            })
+        })
 
-
+        $(document).on('click', "#selectBtn0", function () {
+            var ip = document.getElementById('ip0').innerText;
+            layer.msg("当前结点ip：" + ip);
+        });
+        $(document).on('click', "#selectBtn1", function () {
+            var ip = document.getElementById('ip1').innerText;
+            layer.msg("当前结点ip：" + ip);
+        });
+        $(document).on('click', "#selectBtn2", function () {
+            var ip = document.getElementById('ip2').innerText;
+            layer.msg("当前结点ip：" + ip);
+        });
+        $(document).on('click', "#selectBtn3", function () {
+            var ip = document.getElementById('ip3').innerText;
+            layer.msg("当前结点ip：" + ip);
+        });
     });
-
 </script>
 
 </html>

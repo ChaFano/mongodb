@@ -71,9 +71,6 @@ public class IndexController {
     }
 
 
-
-
-
     @Autowired
     private MongoClient mongoClient; // 自动注入MongoClient
 
