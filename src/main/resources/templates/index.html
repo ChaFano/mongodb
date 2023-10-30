@@ -40,6 +40,7 @@
         var $ = layui.$;
         var form = layui.form;
         var layer = layui.layer;
+        var data ;
         // 渲染
         // var data = [
         //     {
@@ -64,24 +65,30 @@
         //         stateStr: "ARBITER"
         //     },
         // ]
-        var data = function (){
-            $.ajax({
-                type:"",
-                url:"",
-                success:function (res){
-                    if(res.code === 0){
-                        return res.data
-                    }
-                }
-            })
-        }
 
-        var getTpl = document.getElementById('TPL').innerHTML; // 获取模板字符
-        var elemView = document.getElementById('view'); // 视图对象
-        // 渲染并输出结果
-        laytpl(getTpl).render(data, function (str) {
-            elemView.innerHTML = str;
-        });
+        $(
+            function (){
+                $.ajax({
+                    type:"get",
+                    url:"/api/node/getReplicaSetInfo",
+                    async: false,
+                    success:function (res){
+                        console.log(res);
+                        if(res.code === 0){
+                            data =  res.data
+                            var getTpl = document.getElementById('TPL').innerHTML; // 获取模板字符
+                            var elemView = document.getElementById('view'); // 视图对象
+                            // 渲染并输出结果
+                            laytpl(getTpl).render(data, function (str) {
+                                elemView.innerHTML = str;
+                            });
+                        }
+                    }
+                })
+            }
+        )
+
+
     });
 
 </script>
