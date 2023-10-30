@@ -63,10 +63,12 @@ public class NodeInfoServiceImpl implements NodeInfoService {
     @Override
     public List<DbName> getAllDatabases() {
         Document result = mongoTemplate.executeCommand("{ listDatabases: 1 }");
+
         List<Document> databases = (List<Document>) result.get("databases");
         // 返回数据库名的列表
         return databases.stream().map(db -> new DbName(db.getString("name"))).collect(Collectors.toList());
     }
+
 
 
 }

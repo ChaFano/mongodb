@@ -2,11 +2,16 @@ package com.chafan.controller;
 
 import com.chafan.entity.Book;
 import com.chafan.entity.NodeInformation;
+import com.chafan.entity.Student;
 import com.chafan.util.RandomBookTitleGenerator;
 import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.SimpleMongoClientDbFactory;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,64 +38,20 @@ public class IndexController {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    @Autowired
-    RandomBookTitleGenerator titleGenerator;
 
+    @GetMapping("/getCollectionNames")
+    public List<Student> getCollectionNames() {
 
-    /*
-    *
-    * 获取集合的单挑数据
-    * */
-    @GetMapping("/getOneBook")
-    public Book getOneBook(){
+        MongoClient mongoClient = MongoClients.create("mongodb://" + "203.33.207.171" + ":" + "28011");
 
-        Query query = new Query(Criteria.where("name").is("js教程"));
-        Book book = mongoTemplate.findOne(query,Book.class);
-        return book;
-    }
+        MongoTemplate template = new MongoTemplate(mongoClient, "db01");
 
-    /*
-    * 获取集合的所有数据
-    * */
-    @GetMapping("/getBookList")
-    public List<Book> getBookList(){
-        List<Book> bookList = mongoTemplate.findAll(Book.class,"book");
-        return bookList;
-    }
-
-    /*
-    * 插入数据
-    * */
-    @GetMapping("/insertBook")
-    public boolean insertBook(){
-        for (int i = 0; i <100 ; i++) {
-            Book book = new Book(titleGenerator.generateRandomTitle());
-            mongoTemplate.insert(book);
-        }
-        return true;
+        return template.findAll(Student.class,"student");
     }
 
 
 
 
-
-    @Autowired
-    private MongoClient mongoClient; // 自动注入MongoClient
-
-    /*
-    * 动态切换数据库 查询数据库中的数据
-    * 用于在 查询非 admin 数据库的其他信息
-    * */
-    @GetMapping("/performOperationInDatabase")
-    public List<Book> performOperationInDatabase(String databaseName, String collectionName) {
-
-        MongoTemplate dynamicMongoTemplate = new MongoTemplate(mongoClient, "book");
-        // 使用动态MongoTemplate执行操作
-        List<Book> results = dynamicMongoTemplate.findAll(Book.class, "book");
-
-        // 返回结果
-        return results;
-    }
 
 
 }
