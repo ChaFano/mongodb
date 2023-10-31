@@ -5,7 +5,7 @@
 
 ### 1、软件解压
 
-```json
+```javascript
 tar -zxvf mongodb-linux-x86_64-ubuntu2004-5.0.21.tgz
 ```
 
@@ -13,7 +13,7 @@ tar -zxvf mongodb-linux-x86_64-ubuntu2004-5.0.21.tgz
 
 `创建主节点、从节点、选举节点文件夹和每个节点的数据存储、日志、配置文件夹`
 
-```json
+```javascript
 mkdir -pv /mongo_replica_set/mongod/{master,slave,arbiter}
 
 mkdir -pv /mongo_replica_set/mongod/master/{data,log,conf}
