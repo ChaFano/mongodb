@@ -25,7 +25,7 @@ mkdir -pv /mongo_replica_set/mongod/arbiter/{data,log,conf}
 
 ### 3、复制软件
 
-```json
+```javascript
 cp -ra /mongo_replica_set/mongodb  /mongo_replica_set/mongod/master/
 
 cp -ra /mongo_replica_set/mongodb  /mongo_replica_set/mongod/slave/
@@ -38,7 +38,7 @@ cp -ra /mongo_replica_set/mongodb  /mongo_replica_set/mongod/arbiter/
 
 创建master配置文件
 
-```json
+```javascript
 vim master/conf/mongodb.conf
 
 dbpath=/mongo_replica_set/mongod/master/data
@@ -56,7 +56,7 @@ noprealloc=true
 
 创建slave配置文件
 
-```json
+```javascript
 vim slave/conf/mongodb.conf
 
 dbpath=/mongo_replica_set/mongod/slave/data
@@ -74,7 +74,7 @@ noprealloc=true
 
 创建arbiter配置文件
 
-```json
+```javascript
 vim arbiter/conf/mongodb.conf
 
 dbpath=/mongo_replica_set/mongod/arbiter/data
@@ -92,7 +92,7 @@ noprealloc=true
 
 创建slave2配置文件
 
-```json
+```javascript
 vim slave2/conf/mongodb.conf
 
 dbpath=/mongo_replica_set/mongod/slave2/data
@@ -110,7 +110,7 @@ noprealloc=true
 
 配置文件参数解释
 
-```json
+```javascript
 dbpath：数据存放目录
 logpath：日志存放路径
 pidfilepath：进程文件，方便停止mongodb
@@ -126,7 +126,7 @@ noprealloc：不预先分配存储
 
 ### 5、启动mongodb
 
-```json
+```javascript
 启动主节点
 ./master/mongodb/bin/mongod -f master/conf/mongodb.conf 
 
@@ -145,7 +145,7 @@ ps -ef | grep mongodb
 
 ### 6、配置副本集
 
-```json
+```javascript
 1、进入主节点
 ./master/mongodb/bin/mongo --port=28011
 
@@ -155,10 +155,10 @@ use admin
 3、定义初始化脚本（类似于js 的 var a = {}）
 
 fbj={_id:"RPS_TEST1", 
-     members:[{_id:0,host:'203.33.207.171:28011',priority:2},
-              {_id:1,host:'203.33.207.171:28012',priority:1}, 	
-              {_id:2,host:'203.33.207.171:28013',arbiterOnly:true},
-              {_id:3,host:'203.33.207.171:28014',priority:1}, 
+     members:[{_id:0,host:'127.0.0.1:28011',priority:2},
+              {_id:1,host:'127.0.0.1:28012',priority:1}, 	
+              {_id:2,host:'127.0.0.1:28013',arbiterOnly:true},
+              {_id:3,host:'127.0.0.1:28014',priority:1}, 
              ]};
 
 4、使配置生效
@@ -170,7 +170,7 @@ rs.status()
 
 ### 7、测试副本集
 
-```json
+```javascript
 主节点 创建数据库
 use db01
 
@@ -210,11 +210,11 @@ rs.secondaryOk();
 
 2. **执行 rs.remove()：** 在连接到主节点之后，执行 `rs.remove()` 命令以移除指定的节点。例如，如果你想要移除节点 `node-3`，你可以执行如下命令：
 
-```json
+```javascript
    rs.remove("node-3:port")  // 替换为要移除的节点的主机名和端口
    
-   rs.remove("203.33.207.171:28011")
-   rs.remove("203.33.207.171:28012")  // 只能将从节点移出去
+   rs.remove("127.0.0.1:28011")
+   rs.remove("127.0.0.1:28012")  // 只能将从节点移出去
 ```
 
 请确保替换为要移除的节点的确切主机名和端口。
@@ -225,10 +225,10 @@ rs.secondaryOk();
 
 **加入副本集**
 
-```json
+```javascript
 rs.remove("node-3:port")  // 替换为要加入的节点的主机名和端口
 
-rs.add("203.33.207.171:28012")  // 加入节点
+rs.add("127.0.0.1:28012")  // 加入节点
 ```
 
 
