@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @Description 页面跳转
  */
 
-
-
 @Controller
 public class IndexController {
 
