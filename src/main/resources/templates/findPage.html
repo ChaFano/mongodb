@@ -10,10 +10,12 @@
 <body class="layui-layout-body">
 <div class="layui-body" style="margin:40px 0 0 10px ">
     <div style="padding: 16px;">
+
         <form class="layui-form layui-row layui-col-space16">
             <div class="layui-btn-container layui-col-xs12">
                 <button class="layui-btn" lay-submit lay-filter="demo-table-search">查询</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn" id="addbtn" lay-submit lay-filter="addbtn" >添加数据</button>
             </div>
             <div class="layui-form-item">
                 <div class="layui-inline">
@@ -133,10 +135,24 @@
             }
         })
 
+        // 添加数据点击
+        form.on('submit(addbtn)', function (data) {
+            $.ajax({
+                type: "GET",
+                url: "/api/student/insertStudentRandom/1",
+                success: function (res) {
+                    if (res.code === 0) {
+                        layer.msg('添加成功', {icon: 1})
+                        table.reload('alldata');
+                    }
+                }
+            })
+            return false;
+        });
+
         // 搜索提交
         form.on('submit(demo-table-search)', function (data) {
             var field = data.field; // 获得表单字段
-
         });
     })
 </script>
