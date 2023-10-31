@@ -62,7 +62,7 @@
         // 渲染 副本集节点信息
         $(function () {
             $.ajax({
-                type: "get",
+                type: "GET",
                 url: "/api/node/getReplicaSetInfo",
                 // async: false,
                 success: function (res) {
@@ -85,7 +85,7 @@
         // 树形结构渲染
         $(function () {
             $.ajax({
-                type: "get",
+                type: "GET",
                 url: "/api/node/getAllDatabases",
                 // async: false,
                 success: function (res) {

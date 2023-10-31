@@ -15,14 +15,16 @@ public class Student {
     private String name;
     private int age;
     private String gender;
+    private String student_id;
     private String phone_number;
     private List<Course> grades;
 
-    public Student(String _id, String name, int age, String gender, String phone_number, List<Course> grades) {
+    public Student(String _id, String name, int age, String gender, String student_id, String phone_number, List<Course> grades) {
         this._id = _id;
         this.name = name;
         this.age = age;
         this.gender = gender;
+        this.student_id = student_id;
         this.phone_number = phone_number;
         this.grades = grades;
     }
@@ -32,6 +34,14 @@ public class Student {
 
     public String get_id() {
         return _id;
+    }
+
+    public String getStudent_id() {
+        return student_id;
+    }
+
+    public void setStudent_id(String student_id) {
+        this.student_id = student_id;
     }
 
     public void set_id(String _id) {
@@ -85,6 +95,7 @@ public class Student {
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
+                ", student_id='" + student_id + '\'' +
                 ", phone_number='" + phone_number + '\'' +
                 ", grades=" + grades +
                 '}';

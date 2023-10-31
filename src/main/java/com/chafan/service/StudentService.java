@@ -41,4 +41,16 @@ public interface StudentService {
      */
     List<Object> queryByIPPortDatabase(String ip, int port, String databaseName, String collectionName);
 
+    /**
+     * 随机插入数据 到 student 集合中
+     * @param number
+     * @return
+     */
+    boolean insertStudentRandom(int number);
+
+
+
+
+
+
 }

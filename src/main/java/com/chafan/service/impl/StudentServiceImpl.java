@@ -2,6 +2,7 @@ package com.chafan.service.impl;
 
 import com.chafan.entity.Student;
 import com.chafan.service.StudentService;
+import com.chafan.util.RandomStudent;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.result.DeleteResult;
@@ -44,9 +45,6 @@ public class StudentServiceImpl implements StudentService {
         return results;
     }
 
-
-
-
     /**
      * 根据id 删除数据
      * @param id
@@ -78,6 +76,28 @@ public class StudentServiceImpl implements StudentService {
     }
 
     /**
+     * 随机插入文档数据 到指定数据库
+     * @param number
+     * @return
+     */
+    @Override
+    public boolean insertStudentRandom(int number) {
+
+        try {
+            MongoTemplate template = new MongoTemplate(mongoClient, "db01");
+            for (int i = 0; i <number ; i++) {
+                Student student = RandomStudent.generateStudent();
+//                template.save(student,"student");
+                template.insert(student,"student");
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
      * 根据数据库和集合名查询数据
      * @param dbName
      * @param collectionName
@@ -88,6 +108,8 @@ public class StudentServiceImpl implements StudentService {
         MongoTemplate template = new MongoTemplate(mongoClient,dbName);
         return template.findAll(Object.class, collectionName);
     }
+
+
 
 
 }

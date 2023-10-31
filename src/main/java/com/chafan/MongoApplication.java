@@ -11,8 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication
-public class Mongo1Application {
+public class MongoApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Mongo1Application.class, args);
+        SpringApplication.run(MongoApplication.class, args);
     }
 }

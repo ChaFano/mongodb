@@ -45,6 +45,11 @@ public class StudentController {
     }
 
 
+    @GetMapping("/insertStudentRandom/{number}")
+    public R insertStudentRandom(@PathVariable int number){
+        return R.ok().setData(studentService.insertStudentRandom(number));
+    }
+
 
 
 }
