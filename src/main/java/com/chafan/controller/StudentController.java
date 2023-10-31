@@ -30,6 +30,7 @@ public class StudentController {
 
     @GetMapping("/deleteById/{id}")
     public R deleteById(@PathVariable String id){
+        System.out.println(id);
         return R.ok().setData(studentService.deleteStudent(id));
     }
 

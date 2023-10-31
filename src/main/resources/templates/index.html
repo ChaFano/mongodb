@@ -22,7 +22,7 @@
                 state：<span id="state">{{-item.state}}</span></br>
                 stateStr：<span id="stateStr">{{-item.stateStr}}</span></br>
             </div>
-            <button id="selectBtn{{-item.id}}" type="button" class="layui-btn layui-btn-radius">查询</button>
+<!--            <button id="selectBtn{{-item.id}}" type="button" class="layui-btn layui-btn-radius">查询</button>-->
         </div>
     </div>
     {{# }); }}
@@ -111,22 +111,22 @@
             })
         })
 
-        $(document).on('click', "#selectBtn0", function () {
-            var ip = document.getElementById('ip0').innerText;
-            layer.msg("当前结点ip：" + ip);
-        });
-        $(document).on('click', "#selectBtn1", function () {
-            var ip = document.getElementById('ip1').innerText;
-            layer.msg("当前结点ip：" + ip);
-        });
-        $(document).on('click', "#selectBtn2", function () {
-            var ip = document.getElementById('ip2').innerText;
-            layer.msg("当前结点ip：" + ip);
-        });
-        $(document).on('click', "#selectBtn3", function () {
-            var ip = document.getElementById('ip3').innerText;
-            layer.msg("当前结点ip：" + ip);
-        });
+        // $(document).on('click', "#selectBtn0", function () {
+        //     var ip = document.getElementById('ip0').innerText;
+        //     layer.msg("当前结点ip：" + ip);
+        // });
+        // $(document).on('click', "#selectBtn1", function () {
+        //     var ip = document.getElementById('ip1').innerText;
+        //     layer.msg("当前结点ip：" + ip);
+        // });
+        // $(document).on('click', "#selectBtn2", function () {
+        //     var ip = document.getElementById('ip2').innerText;
+        //     layer.msg("当前结点ip：" + ip);
+        // });
+        // $(document).on('click', "#selectBtn3", function () {
+        //     var ip = document.getElementById('ip3').innerText;
+        //     layer.msg("当前结点ip：" + ip);
+        // });
 
 
     });
