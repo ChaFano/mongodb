@@ -25,7 +25,9 @@ public class StudentController {
 
     @GetMapping("/findStudentAll")
     public R findStudentAll(){
-        return R.ok().setData(studentService.getStudents());
+//        return R.ok().setData(studentService.getStudents());
+        return R.ok().setData(studentService.getStudents(),
+                Long.valueOf(studentService.getStudents().size()));
     }
 
     @GetMapping("/deleteById/{id}")

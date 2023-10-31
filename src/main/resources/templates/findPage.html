@@ -15,7 +15,7 @@
             <div class="layui-btn-container layui-col-xs12">
                 <button class="layui-btn" lay-submit lay-filter="demo-table-search">查询</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                <button class="layui-btn" id="addbtn" lay-submit lay-filter="addbtn" >添加数据</button>
+                <button class="layui-btn" id="addbtn" lay-submit lay-filter="addbtn">添加数据</button>
             </div>
             <div class="layui-form-item">
                 <div class="layui-inline">
@@ -38,6 +38,7 @@
             </div>
         </form>
         <table class="layui-hide" id="alldata" lay-filter="alldata"></table>
+        <div id="pagination"></div>
     </div>
 </div>
 
@@ -56,32 +57,6 @@
         var form = layui.form;
         var laytpl = layui.laytpl;
         var laypage = layui.laypage;
-
-        $(function () {
-            $.ajax({
-                type: "GET",
-                url: "/api/node/getReplicaSetInfo",
-                // async: false,
-                success: function (res) {
-                    var jsonData = res.data
-                    if (res.code === 0) {
-                        var serverSelect = document.getElementById('port');
-                        var serverNameInput = document.getElementById('ipaddr');
-                        serverNameInput.value = jsonData[0].name.split(':')[0];
-                        // 循环遍历JSON数据并提取端口号，然后添加为下拉框选项
-                        for (var i = 0; i < jsonData.length; i++) {
-                            var option = document.createElement('option');
-                            var port = jsonData[i].name.split(':')[1]; // 提取端口号
-                            option.value = jsonData[i].id;
-                            option.text = port;
-                            serverSelect.appendChild(option);
-                        }
-                        // 使用LayUI的form.render()方法来更新表单元素
-                        form.render('select');
-                    }
-                }
-            })
-        })
 
         table.render({
             elem: '#alldata',

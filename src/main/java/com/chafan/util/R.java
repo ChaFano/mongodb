@@ -16,6 +16,11 @@ public class R extends HashMap<String, Object> {
         put("data",data);
         return this;
     }
+    public R setData(Object data,Long count){
+        put("data",data);
+        put("count",count);
+        return this;
+    }
 
     public R(){
         put("code",0);
