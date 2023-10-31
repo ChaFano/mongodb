@@ -3,9 +3,7 @@ package com.chafan.service.impl;
 import com.chafan.entity.DbTree;
 import com.chafan.entity.NodeInformation;
 import com.chafan.service.NodeInfoService;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoIterable;
+import com.mongodb.client.*;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -87,6 +85,34 @@ public class NodeInfoServiceImpl implements NodeInfoService {
         }).collect(Collectors.toList());
     }
 
+
+    @Override
+    public boolean createDbAndCollection(String databaseName, String collectionName) {
+
+        try {
+            MongoClient mongoClient = MongoClients.create("mongodb://203.33.207.171:28011");
+            MongoTemplate template = new MongoTemplate(mongoClient, databaseName);
+            template.createCollection(collectionName);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteCollection(String collectionName) {
+
+        try {
+            mongoTemplate.dropCollection(collectionName);
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 
 }

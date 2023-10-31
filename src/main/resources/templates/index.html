@@ -33,21 +33,94 @@
 
 <body class="layui-layout-body">
 
-    <div class="layui-body" style="margin:40px 0 0 10px ">
-
+    <div class="layui-body" style="margin:60px 0 0 10px ">
+         <h2>副本集节点信息</h2>
         <div class="layui-bg-gray" style="padding: 16px;">
-            <h2>副本集节点信息</h2>
+
             <div id="view" class="layui-row layui-col-space12">
             </div>
         </div>
 
-        <h2>数据库信息</h2>
-        <div id="ID-tree-demo" style="font-size:20px"></div>
+        <div class="layui-row" style="margin:30px 0 0 10px ">
+            <div class="layui-col-xs4">
+
+                <h2>数据库创建</h2>
+                <div class="div_2">
+                    <form class="layui-form " style="margin:20px 0px 0px 20px;">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">数据库名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="databaseName" id="databaseName" placeholder="请输入数据库名" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">集合名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="collectionName" id="collectionName"  placeholder="请输入集合名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="formAdd">创建</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                <h2>集合删除</h2>
+                <div class="div_2">
+                    <form class="layui-form " style="margin:40px 0px 0px 20px;">
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">集合名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="collectionName1" id="collectionName1"  placeholder="请输入集合名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="formDel" >删除</button>
+                                <button type="reset" class="layui-btn layui-btn-primary" >重置</button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+            <div class="layui-col-xs7">
+                <h2>数据库信息</h2>
+                <div class="div_2">
+                    <div id="ID-tree-demo" style="font-size:20px"></div>
+                </div>
+
+
+            </div>
+        </div>
 
     </div>
 
 </body>
 
+<style>
+
+ .div_2{
+    border: 2px solid #F0F0F0; /* 边框：2像素宽，实线，颜色为深灰色 */
+    background-color: #F8F8F8; /* 背景色为淡灰色 */
+    padding: 20px; /* 内边距为20像素，使内容远离边框 */
+    width: 90%;
+
+}
+
+
+
+
+</style>
 
 <script type="text/javascript">
     layui.use(function () {
@@ -56,8 +129,12 @@
         var layer = layui.layer;
         var form = layui.form;
         var tree = layui.tree;
+        var form = layui.form;
+
         var nodedata;
         var databases;
+
+
 
         // 渲染 副本集节点信息
         $(function () {
@@ -110,6 +187,46 @@
                 }
             })
         })
+
+        //监听表单提交
+        form.on('submit(formAdd)', function(data){
+            var databaseName = $.trim($("#databaseName").val());
+            var collectionName = $.trim($("#collectionName").val())
+            $.ajax({
+                url: '/api/node/createDbAndCollection',
+                type: 'POST',
+                data:{
+                    "databaseName": databaseName,
+                    "collectionName": collectionName,
+                },
+                success:function(data){
+                    if(data.data == true){
+                        layer.msg("创建成功",function() {time:20000})
+                        window.parent.frames.location.href="/index"
+                    }
+                }
+            })
+            return false;
+        });
+
+        form.on('submit(formDel)', function(data){
+
+            var collectionName = $.trim($("#collectionName1").val())
+            $.ajax({
+                url: '/api/node/deleteCollection',
+                type: 'POST',
+                data:{
+                    "collectionName": collectionName,
+                },
+                success:function(data){
+                    if(data.data == true){
+                        layer.msg("创建成功",function() {time:20000})
+                        window.parent.frames.location.href="/index"
+                    }
+                }
+            })
+            return false;
+        });
 
         // $(document).on('click', "#selectBtn0", function () {
         //     var ip = document.getElementById('ip0').innerText;

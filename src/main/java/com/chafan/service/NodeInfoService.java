@@ -2,6 +2,8 @@ package com.chafan.service;
 
 import com.chafan.entity.DbTree;
 import com.chafan.entity.NodeInformation;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
 
 import java.util.List;
 
@@ -25,6 +27,21 @@ public interface NodeInfoService {
      */
     List<DbTree> getAllDatabases();
 
+
+    /**
+     * 创建数据库和集合
+     * @param databaseName
+     * @param collectionName
+     * @return
+     */
+    boolean createDbAndCollection(String databaseName, String collectionName);
+
+    /**
+     * 删除集合
+     * @param collectionName
+     * @return
+     */
+    boolean deleteCollection(String collectionName);
 
 
 }

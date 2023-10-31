@@ -8,6 +8,7 @@ import com.mongodb.client.MongoIterable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,11 +54,35 @@ public class NodeInfoServiceController {
     }
 
 
+    /**
+     * 获取所有集合名称
+     * @return
+     */
     @GetMapping("/getCollectionNames")
     public MongoIterable<String> getCollectionNames(){
         MongoDatabase database = mongoClient.getDatabase("db01");
         return  database.listCollectionNames();
     }
 
+    /**
+     * 创建数据库 和 集合 数据库已有的话就在该数据库下创建集合
+     * @param databaseName
+     * @param collectionName
+     * @return
+     */
+    @PostMapping("/createDbAndCollection")
+    public R createDbAndCollection(String databaseName, String collectionName){
+        return R.ok().setData(nodeInfoService.createDbAndCollection(databaseName, collectionName));
+    }
+
+    /**
+     * 根据集合名删除 删除的是 admin 数据下的
+     * @param collectionName
+     * @return
+     */
+    @PostMapping("/deleteCollection")
+    public R deleteCollection(String collectionName){
+        return R.ok().setData(nodeInfoService.deleteCollection(collectionName));
+    }
 
 }

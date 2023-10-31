@@ -84,7 +84,9 @@
         table.render({
             elem: '#alldata',
             url: '/api/student/findStudentAll',
-            cols: [[
+            page: true,
+            cols: [
+                [
                 {field: '_id', title: 'ID', width: 80, hide: true},
                 {type: 'numbers', title: '序号', width: 80, fixed: 'left'},
                 {field: 'name', title: '姓名', width: 80, align: 'center'},
@@ -101,9 +103,9 @@
                 {field: 'student_id', title: '学号', width: 180, align: 'center'},
                 {field: 'phone_number', title: '电话', width: 120, align: 'center'},
                 {
-                    field: 'grades', title: '学科成绩', width: 450, templet: function (res) {
+                    field: 'grades', title: '学科成绩', width: 800, templet: function (res) {
                         var str = '';
-                        for (var i = 0; i < 3; i++) {
+                        for (var i = 0; i < 5; i++) {
                             str += '<span class="layui-badge-rim" style="margin-right: 10px;">'
                                 + res.grades[i].subject + ":" + res.grades[i].score + '</span>' + '&nbsp;&nbsp;'
                         }
@@ -111,7 +113,21 @@
                     }
                 },
                 {title: '操作', minWidth: 125, toolbar: '#barDemo'}
-            ]],
+            ]
+            ],
+            limit:15,
+            parseData: function (res) {  // 分页效果必须要加这个函数只加 page:true 不起作用。
+                var result;
+                console.log(this);
+                console.log(JSON.stringify(res));
+                if (this.page.curr) {
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                } else {
+                    result = res.data.slice(0, this.limit);
+                }
+                return {"code": res.code, "msg": res.msg, "count": res.data.length, "data": result};
+            }
+
         })
 
         table.on('tool(alldata)', function (obj) {

@@ -165,7 +165,7 @@ public class RandomStudent {
         student.setPhone_number(generatePhoneNumber());
 
         List<Course> courseList = new ArrayList<>();
-        for (int i = 0; i <3 ; i++) {
+        for (int i = 0; i <5 ; i++) {
             Course course = new Course();
             course.setSubject(computerCourses[random.nextInt(computerCourses.length-1)]);
             course.setScore(gradeLevels[random.nextInt(gradeLevels.length-1)]);
