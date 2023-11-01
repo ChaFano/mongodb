@@ -2,6 +2,9 @@
 
 该项目旨在验证 MongoDB 中的一些知识点，这里主要是验证副本集，实现高可用的数据验证。
 
+<div>
+<image src="https://img-blog.csdnimg.cn/1520c79d76e74d5496998ed23c17c403.png#pic_center"/>
+</div>
 
 ## 副本集搭建
 
