@@ -6,6 +6,7 @@ import com.chafan.service.NodeInfoService;
 import com.mongodb.client.*;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,6 @@ import java.util.stream.Collectors;
  * @date 2023/10/30 11:05
  * @Description TODO
  */
-
 @Service
 public class NodeInfoServiceImpl implements NodeInfoService {
 
@@ -27,6 +27,8 @@ public class NodeInfoServiceImpl implements NodeInfoService {
     private MongoTemplate mongoTemplate;
     @Autowired
     private MongoClient mongoClient;
+
+
 
     /**
      * 查询副本集各个节点的信息
@@ -85,12 +87,16 @@ public class NodeInfoServiceImpl implements NodeInfoService {
         }).collect(Collectors.toList());
     }
 
+    @Value("${connection.url}")
+    public  String url;
 
     @Override
     public boolean createDbAndCollection(String databaseName, String collectionName) {
 
         try {
-            MongoClient mongoClient = MongoClients.create("mongodb://203.33.207.171:28011");
+//          MongoClient mongoClient = MongoClients.create("mongodb://127.0.0.1:port");
+
+            MongoClient mongoClient = MongoClients.create(url);
             MongoTemplate template = new MongoTemplate(mongoClient, databaseName);
             template.createCollection(collectionName);
 
