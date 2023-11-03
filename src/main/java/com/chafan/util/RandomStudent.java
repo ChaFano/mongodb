@@ -85,6 +85,7 @@ public class RandomStudent {
 
     /**
      * 随机生成姓名
+     *
      * @return
      */
     public static String generateName() {
@@ -94,16 +95,18 @@ public class RandomStudent {
 
     /**
      * 性别随机
+     *
      * @return
      */
     public static String RandomGender() {
         Random random = new Random();
         int randomNumber = random.nextInt(2); // 生成 0 或 1
-        return randomNumber == 0 ? "男":"女";
+        return randomNumber == 0 ? "男" : "女";
     }
 
     /**
      * 年龄随机
+     *
      * @param minAge
      * @param maxAge
      * @return
@@ -115,6 +118,7 @@ public class RandomStudent {
 
     /**
      * 随机生成电话号码
+     *
      * @return
      */
     public static String generatePhoneNumber() {
@@ -135,6 +139,7 @@ public class RandomStudent {
 
     /**
      * 随机生成学号
+     *
      * @return
      */
     public static String generateStudentID() {
@@ -152,9 +157,35 @@ public class RandomStudent {
 
     /**
      * 随机生成学生信息
+     *
      * @return
      */
-    public static Student generateStudent(){
+    public static List<Student> generateStudent(Long num) {
+
+        Random random = new Random();
+        List<Student> students = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            Student student = new Student();
+            student.setName(generateName());
+            student.setAge(generateAge(18, 30));
+            student.setGender(RandomGender());
+            student.setStudent_id(generateStudentID());
+            student.setPhone_number(generatePhoneNumber());
+
+            List<Course> courseList = new ArrayList<>();
+            for (int j = 0; j < 5; j++) {
+                Course course = new Course();
+                course.setSubject(computerCourses[random.nextInt(computerCourses.length - 1)]);
+                course.setScore(gradeLevels[random.nextInt(gradeLevels.length - 1)]);
+                courseList.add(course);
+            }
+            student.setGrades(courseList);
+            students.add(student);
+        }
+        return students;
+    }
+
+    public static Student generateStudent() {
 
         Random random = new Random();
         Student student = new Student();
@@ -163,12 +194,11 @@ public class RandomStudent {
         student.setGender(RandomGender());
         student.setStudent_id(generateStudentID());
         student.setPhone_number(generatePhoneNumber());
-
         List<Course> courseList = new ArrayList<>();
-        for (int i = 0; i <5 ; i++) {
+        for (int j = 0; j < 5; j++) {
             Course course = new Course();
-            course.setSubject(computerCourses[random.nextInt(computerCourses.length-1)]);
-            course.setScore(gradeLevels[random.nextInt(gradeLevels.length-1)]);
+            course.setSubject(computerCourses[random.nextInt(computerCourses.length - 1)]);
+            course.setScore(gradeLevels[random.nextInt(gradeLevels.length - 1)]);
             courseList.add(course);
         }
         student.setGrades(courseList);

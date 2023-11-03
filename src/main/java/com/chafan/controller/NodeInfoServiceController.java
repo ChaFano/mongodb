@@ -1,5 +1,6 @@
 package com.chafan.controller;
 
+import com.chafan.entity.DbTree;
 import com.chafan.service.NodeInfoService;
 import com.chafan.util.R;
 import com.mongodb.client.MongoClient;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @Auther: 茶凡
@@ -38,6 +41,18 @@ public class NodeInfoServiceController {
     @Autowired
     MongoClient mongoClient;
 
+    @Value("${connection.url1}")
+    public String url1;
+    @Value("${connection.url2}")
+    public String url2;
+    @Value("${connection.url3}")
+    public String url3;
+    @Value("${connection.url4}")
+    public String url4;
+    @Value("${connection.url5}")
+    public String url5;
+    @Value("${connection.url6}")
+    public String url6;
 
     /**
      * 查询副本集有各个节点的信息
@@ -76,6 +91,7 @@ public class NodeInfoServiceController {
      */
     @PostMapping("/createDbAndCollection")
     public R createDbAndCollection(String databaseName, String collectionName){
+        System.out.println(databaseName+ ":" + collectionName);
         return R.ok().setData(nodeInfoService.createDbAndCollection(databaseName, collectionName));
     }
 
@@ -87,6 +103,30 @@ public class NodeInfoServiceController {
     @PostMapping("/deleteCollection")
     public R deleteCollection(String collectionName){
         return R.ok().setData(nodeInfoService.deleteCollection(collectionName));
+    }
+
+
+    @PostMapping("/getNodeDatabases")
+    public R getNodeDatabases(){
+        List<String> list = new ArrayList<>();
+        list.add(url1);
+        list.add(url2);
+        list.add(url3);
+        list.add(url4);
+        list.add(url5);
+        list.add(url6);
+
+
+        List<DbTree> collect = list.stream().map(e -> {
+            DbTree tree = new DbTree();
+            tree.setTitle(e.substring(e.length() - 5));
+            tree.setChildren(nodeInfoService.getNodeDatabases());
+
+            return tree;
+        }).collect(Collectors.toList());
+
+
+        return R.ok().setData(collect);
     }
 
 }

@@ -18,7 +18,7 @@ public class IndexController {
 
     @GetMapping("/findPage")
     public String findPage(){
-        return "findPage.html";
+        return "failover.html";
     }
 
     @GetMapping("/index")
@@ -26,6 +26,10 @@ public class IndexController {
         return "index.html";
     }
 
+    @GetMapping("/progress")
+    public String progress(){
+        return "read-write.html";
+    }
 
 
 }

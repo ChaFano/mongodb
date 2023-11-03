@@ -11,25 +11,20 @@ import java.util.List;
 public class DbTree {
 
     private String title;
-    private boolean spread = true;
     private List<DbTree> children;
 
-    public DbTree(String title, boolean spread, List<DbTree> children) {
+
+    public DbTree(String title, List<DbTree> children, List<List<DbTree>> children2) {
         this.title = title;
-        this.spread = spread;
         this.children = children;
+
     }
 
-    public boolean isSpread() {
-        return spread;
-    }
-
-    public void setSpread(boolean spread) {
-        this.spread = spread;
-    }
 
     public DbTree() {
     }
+
+
 
     public String getTitle() {
         return title;
@@ -51,7 +46,6 @@ public class DbTree {
     public String toString() {
         return "DbTree{" +
                 "title='" + title + '\'' +
-                ", spread=" + spread +
                 ", children=" + children +
                 '}';
     }

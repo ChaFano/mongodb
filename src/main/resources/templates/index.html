@@ -7,42 +7,12 @@
 
 </head>
 
-<script id="TPL" type="text/html">
-
-    {{# layui.each(d, function(index, item){ }}
-
-    <div class="layui-col-md2">
-
-        <div class="layui-card">
-            <div class="layui-card-header" style="background-color: #009f95">
-                <h4>结点：<span>{{-item.id}}</span></h4></div>
-            <div class="layui-card-body">
-                ip：<span id="ip{{-item.id}}">{{-item.name}}</span></br>
-                health：<span id="health">{{-item.health}}</span></br>
-                state：<span id="state">{{-item.state}}</span></br>
-                stateStr：<span id="stateStr">{{-item.stateStr}}</span></br>
-            </div>
-<!--            <button id="selectBtn{{-item.id}}" type="button" class="layui-btn layui-btn-radius">查询</button>-->
-        </div>
-    </div>
-    {{# }); }}
-    <p>{{# if(d.length === 0){ }}
-        无数据
-        {{# } }}</p>
-</script>
-
 <body class="layui-layout-body">
 
     <div class="layui-body" style="margin:60px 0 0 10px ">
-         <h2>副本集节点信息</h2>
-        <div class="layui-bg-gray" style="padding: 16px;">
-
-            <div id="view" class="layui-row layui-col-space12">
-            </div>
-        </div>
 
         <div class="layui-row" style="margin:30px 0 0 10px ">
-            <div class="layui-col-xs4">
+            <div class="layui-col-xs3">
 
                 <h2>数据库创建</h2>
                 <div class="div_2">
@@ -68,32 +38,10 @@
                             </div>
                         </div>
                     </form>
-
-                </div>
-
-                <h2>集合删除</h2>
-                <div class="div_2">
-                    <form class="layui-form " style="margin:40px 0px 0px 20px;">
-
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">集合名称</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="collectionName1" id="collectionName1"  placeholder="请输入集合名称" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-
-                        <div class="layui-form-item">
-                            <div class="layui-input-block">
-                                <button class="layui-btn" lay-submit lay-filter="formDel" >删除</button>
-                                <button type="reset" class="layui-btn layui-btn-primary" >重置</button>
-                            </div>
-                        </div>
-                    </form>
-
                 </div>
 
             </div>
-            <div class="layui-col-xs7">
+            <div class="layui-col-xs3">
                 <h2>数据库信息</h2>
                 <div class="div_2">
                     <div id="ID-tree-demo" style="font-size:20px"></div>
@@ -127,43 +75,16 @@
         var laytpl = layui.laytpl;
         var $ = layui.$;
         var layer = layui.layer;
-        var form = layui.form;
         var tree = layui.tree;
         var form = layui.form;
-
-        var nodedata;
         var databases;
 
-
-
-        // 渲染 副本集节点信息
-        $(function () {
-            $.ajax({
-                type: "GET",
-                url: "/api/node/getReplicaSetInfo",
-                // async: false,
-                success: function (res) {
-                    console.log(res);
-                    if (res.code === 0) {
-
-                        nodedata = res.data
-                        var getTpl = document.getElementById('TPL').innerHTML; // 获取模板字符
-                        var elemView = document.getElementById('view'); // 视图对象
-
-                        // 渲染并输出结果
-                        laytpl(getTpl).render(nodedata, function (str) {
-                            elemView.innerHTML = str;
-                        });
-                    }
-                }
-            })
-        })
 
         // 树形结构渲染
         $(function () {
             $.ajax({
-                type: "GET",
-                url: "/api/node/getAllDatabases",
+                type: "POST",
+                url: "/api/node/getNodeDatabases",
                 // async: false,
                 success: function (res) {
                     console.log(res);
@@ -185,7 +106,9 @@
                     }
                 }
             })
-        })
+        });
+
+
 
         //监听表单提交
         form.on('submit(formAdd)', function(data){
@@ -208,6 +131,7 @@
             return false;
         });
 
+
         form.on('submit(formDel)', function(data){
 
             var collectionName = $.trim($("#collectionName1").val())
@@ -227,22 +151,7 @@
             return false;
         });
 
-        // $(document).on('click', "#selectBtn0", function () {
-        //     var ip = document.getElementById('ip0').innerText;
-        //     layer.msg("当前结点ip：" + ip);
-        // });
-        // $(document).on('click', "#selectBtn1", function () {
-        //     var ip = document.getElementById('ip1').innerText;
-        //     layer.msg("当前结点ip：" + ip);
-        // });
-        // $(document).on('click', "#selectBtn2", function () {
-        //     var ip = document.getElementById('ip2').innerText;
-        //     layer.msg("当前结点ip：" + ip);
-        // });
-        // $(document).on('click', "#selectBtn3", function () {
-        //     var ip = document.getElementById('ip3').innerText;
-        //     layer.msg("当前结点ip：" + ip);
-        // });
+
 
 
     });

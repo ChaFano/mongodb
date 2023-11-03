@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>数据查询页面</title>
+    <header th:replace="header.html"></header>
+</head>
+
+
+<body class="layui-layout-body">
+<div class="layui-body" style="margin:40px 0 0 10px ">
+
+
+    <h2>副本集节点信息</h2>
+    <div class="layui-bg-gray" style="padding: 16px;">
+
+        <div id="view" class="layui-row layui-col-space12">
+        </div>
+    </div>
+
+
+    <div style="padding: 16px;">
+
+        <form class="layui-form layui-row layui-col-space16">
+            <div class="layui-btn-container layui-col-xs12">
+                <button class="layui-btn" lay-submit lay-filter="demo-table-search">查询</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <button class="layui-btn" id="addbtn" lay-submit lay-filter="addbtn">添加数据</button>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <div class="layui-input-group">
+                        <div class="layui-input-prefix">
+                            ip地址
+                        </div>
+                        <input type="text" id="ipaddr" class="layui-input" disabled>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">选择端口</label>
+                    <div class="layui-input-inline">
+                        <select id="port" name="port">
+                            <option value="" selected></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <table class="layui-hide" id="alldata" lay-filter="alldata"></table>
+        <div id="pagination"></div>
+    </div>
+</div>
+
+</body>
+
+<script type="text/html" id="barDemo">
+    <div class="layui-clear-space">
+        <a class="layui-btn layui-btn-xs" lay-event="del">删除</a>
+    </div>
+</script>
+
+<script id="TPL" type="text/html">
+
+    {{# layui.each(d, function(index, item){ }}
+
+    <div class="layui-col-md2">
+
+        <div class="layui-card">
+            <div class="layui-card-header" style="background-color: #009f95">
+                <h4>结点：<span>{{-item.id}}</span></h4></div>
+            <div class="layui-card-body">
+                ip：<span id="ip{{-item.id}}">{{-item.name}}</span></br>
+                health：<span id="health">{{-item.health}}</span></br>
+                state：<span id="state">{{-item.state}}</span></br>
+                stateStr：<span id="stateStr">{{-item.stateStr}}</span></br>
+            </div>
+            <!--            <button id="selectBtn{{-item.id}}" type="button" class="layui-btn layui-btn-radius">查询</button>-->
+        </div>
+    </div>
+    {{# }); }}
+    <p>{{# if(d.length === 0){ }}
+        无数据
+        {{# } }}</p>
+</script>
+
+<script type="text/javascript" th:inline="none">
+    layui.use(function () {
+        var table = layui.table;
+        var form = layui.form;
+        var laytpl = layui.laytpl;
+        var $ = layui.$;
+        var layer = layui.layer;
+        var nodedata;
+
+
+
+
+        // 渲染 副本集节点信息
+        $(function () {
+            $.ajax({
+                type: "GET",
+                url: "/api/node/getReplicaSetInfo",
+                // async: false,
+                success: function (res) {
+                    console.log(res);
+                    if (res.code === 0) {
+
+                        nodedata = res.data
+                        var getTpl = document.getElementById('TPL').innerHTML; // 获取模板字符
+                        var elemView = document.getElementById('view'); // 视图对象
+
+                        // 渲染并输出结果
+                        laytpl(getTpl).render(nodedata, function (str) {
+                            elemView.innerHTML = str;
+                        });
+                    }
+                }
+            })
+        })
+
+
+
+
+        $(function () {
+            $.ajax({
+                type: "GET",
+                url: "/api/node/getReplicaSetInfo",
+                // async: false,
+                success: function (res) {
+                    var jsonData = res.data
+                    if (res.code === 0) {
+                        var serverSelect = document.getElementById('port');
+                        var serverNameInput = document.getElementById('ipaddr');
+                        serverNameInput.value = jsonData[0].name.split(':')[0];
+                        // 循环遍历JSON数据并提取端口号，然后添加为下拉框选项
+                        for (var i = 0; i < jsonData.length; i++) {
+                            var option = document.createElement('option');
+                            var port = jsonData[i].name.split(':')[1]; // 提取端口号
+                            option.value = jsonData[i].id;
+                            option.text = port;
+                            serverSelect.appendChild(option);
+                        }
+                        // 使用LayUI的form.render()方法来更新表单元素
+                        form.render('select');
+                    }
+                }
+            })
+        })
+
+        // table.render({
+        //     elem: '#alldata',
+        //     url: '/api/student/findStudentAll',
+        //     page: true,
+        //     lineStyle: 'height: 95px;',
+        //     cols: [
+        //         [
+        //         {field: '_id', title: 'ID', width: 80, hide: true},
+        //         {type: 'numbers', title: '序号', width: 80, fixed: 'left'},
+        //         {field: 'name', title: '姓名', width: 80, align: 'center'},
+        //         {field: 'age', title: '年龄', width: 80, align: 'center'},
+        //         {
+        //             field: 'gender', width: 60, title: '性别', align: 'center', templet: function (d) {
+        //                 if (d.gender === "男") {
+        //                     return '<span style="color: blue">♂</span>';
+        //                 } else {
+        //                     return '<span style="color: pink">♀</span>';
+        //                 }
+        //             }
+        //         },
+        //         {field: 'student_id', title: '学号', width: 180, align: 'center'},
+        //         {field: 'phone_number', title: '电话', width: 120, align: 'center'},
+        //         {
+        //             field: 'grades', title: '学科成绩', width: 600, templet: function (res) {
+        //                 var str = '';
+        //                 for (var i = 0; i < 5; i++) {
+        //                     str += '<span class="layui-badge-rim" style="margin-right: 10px;">'
+        //                         + res.grades[i].subject + ":" + res.grades[i].score + '</span>' + '&nbsp;&nbsp;'
+        //                 }
+        //                 return str;
+        //             }
+        //         },
+        //         {fixed: 'right',title: '操作', minWidth: 125, toolbar: '#barDemo'}
+        //     ]
+        //     ],
+        //     limit:15,
+        //     limits:[15],
+        //     parseData: function (res) {  // 分页效果必须要加这个函数只加 page:true 不起作用。
+        //         var result;
+        //         console.log(this);
+        //         console.log(JSON.stringify(res));
+        //         if (this.page.curr) {
+        //             result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+        //         } else {
+        //             result = res.data.slice(0, this.limit);
+        //         }
+        //         // return {"code": res.code, "msg": res.msg, "count": res.data.length, "data": result};
+        //         return {"code": res.code, "msg": res.msg, "count": res.count, "data": result};
+        //     }
+        //
+        // })
+
+        // table.on('tool(alldata)', function (obj) {
+        //     var data = obj.data;
+        //     if (obj.event === 'del') {
+        //         layer.confirm('是否删除[姓名：' + data.name + ']?', function (index) {
+        //             layer.close(index);
+        //             $.ajax({
+        //                 type: "GET",
+        //                 url: "/api/student/deleteById/" + data._id,
+        //                 success: function (res) {
+        //                     if (res.code === 0) {
+        //                         layer.msg('删除成功', {icon: 1})
+        //                         table.reload('alldata');
+        //                     }
+        //                 }
+        //             })
+        //         });
+        //     }
+        // })
+
+
+
+
+
+        // 搜索提交
+        form.on('submit(demo-table-search)', function (data) {
+            var field = data.field; // 获得表单字段
+        });
+    })
+</script>
+
+
+</html>

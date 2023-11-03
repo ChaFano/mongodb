@@ -2,8 +2,7 @@ package com.chafan.service;
 
 import com.chafan.entity.DbTree;
 import com.chafan.entity.NodeInformation;
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
+
 
 import java.util.List;
 
@@ -26,6 +25,8 @@ public interface NodeInfoService {
      * @return
      */
     List<DbTree> getAllDatabases();
+
+    List<DbTree>  getNodeDatabases();
 
 
     /**

@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * @Auther: 茶凡
  * @ClassName StudentController
@@ -74,6 +79,21 @@ public class StudentController {
     @GetMapping("/insertStudentRandom/{number}")
     public R insertStudentRandom(@PathVariable int number){
         return R.ok().setData(studentService.insertStudentRandom(number));
+    }
+
+    @GetMapping("/getStudentsAsync")
+    public R getStudentsAsync(){
+        return R.ok().setData(studentService.getStudentsAsync());
+    }
+
+    @GetMapping("/batchSave/{number}")
+    public R  batchSave(@PathVariable Long number){
+        return R.ok().setData( studentService.batchSave(number));
+    }
+
+    @GetMapping("/getCount")
+    public R getCount(){
+        return R.ok().setData( studentService.getCount());
     }
 
 
