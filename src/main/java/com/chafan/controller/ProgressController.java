@@ -1,6 +1,7 @@
 package com.chafan.controller;
 
-import com.chafan.entity.Progress;
+import com.chafan.entity.Tps;
+import com.chafan.entity.Qps;
 import com.chafan.service.StudentService;
 import com.chafan.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +32,13 @@ public class ProgressController {
 
         List<Long> list = Arrays.asList(1000L, 10000L, 100000L,300000L);
 
-        List<Progress> collect = list.stream().map(item -> {
-            Progress progress = new Progress();
+        List<Tps> collect = list.stream().map(item -> {
+            Tps tps = new Tps();
             Long time = studentService.batchSave(item);
-            progress.setNumber(item);
-            progress.setTime_consume(time);
-            progress.setTps(item / time);
-            return progress;
+            tps.setNumber(item);
+            tps.setTime_consume(time);
+            tps.setTps(item / time);
+            return tps;
 
         }).collect(Collectors.toList());
 
@@ -48,22 +49,22 @@ public class ProgressController {
     private final ExecutorService executor = Executors.newFixedThreadPool(6); // 根据需要设置合适的线程池大小
 
     @GetMapping("/computeProgress2")
-    public R computeProgress2() {
+    public R tps() {
 
         List<Long> list = Arrays.asList(10000L, 100000L,300000L,1000000L,2000000L);
 
-        List<CompletableFuture<Progress>> futures = list.stream()
+        List<CompletableFuture<Tps>> futures = list.stream()
                 .map(item -> CompletableFuture.supplyAsync(() -> {
-                    Progress progress = new Progress();
+                    Tps tps = new Tps();
                     Long time = studentService.batchSave(item);
-                    progress.setNumber(item);
-                    progress.setTime_consume(time);
-                    progress.setTps(item / time);
-                    return progress;
+                    tps.setNumber(item);
+                    tps.setTime_consume(time);
+                    tps.setTps(item / time);
+                    return tps;
                 }, executor))
                 .collect(Collectors.toList());
 
-        List<Progress> collect = futures.stream()
+        List<Tps> collect = futures.stream()
                 .map(future -> {
                     try {
                         return future.get();
@@ -79,6 +80,36 @@ public class ProgressController {
 
 
 
+    @GetMapping("/qps")
+    public R qps(){ List<Integer> list = Arrays.asList(10000, 100000,300000,1000000,2000000);
+
+        List<CompletableFuture<Qps>> futures = list.stream()
+                .map(item -> CompletableFuture.supplyAsync(() -> {
+
+                    Qps progress = new Qps();
+
+                    double time = studentService.getStudents(item);
+                    progress.setNumber(item);
+                    progress.setTime_consume(time);
+                    progress.setQps(item / time);
+                    return progress;
+
+                }, executor))
+                .collect(Collectors.toList());
+
+        List<Qps> collect = futures.stream()
+                .map(future -> {
+                    try {
+                        return future.get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                        return null; // 根据需要处理异常情况
+                    }
+                })
+                .collect(Collectors.toList());
+
+        return R.ok().setData(collect);
+    }
 
 
 }

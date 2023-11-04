@@ -6,45 +6,46 @@ package com.chafan.entity;
  * @date 2023/11/3 0:38
  * @Description TODO
  */
-public class Progress {
+public class Qps {
 
-    Long number;
+    int number;
 
-    Long time_consume;
+    double time_consume;
 
-    float tps;
+    double qps;
 
-
-    public Long getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(Long number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 
-    public Long getTime_consume() {
+    public double getTime_consume() {
         return time_consume;
     }
 
-    public void setTime_consume(Long time_consume) {
+    public void setTime_consume(double time_consume) {
         this.time_consume = time_consume;
     }
 
-    public float getTps() {
-        return tps;
+    public double getQps() {
+        return qps;
     }
 
-    public void setTps(float tps) {
-        this.tps = tps;
+    public void setQps(double qps) {
+        this.qps = qps;
     }
 
     @Override
     public String toString() {
-        return "Progress{" +
+        return "Progress2{" +
                 "number=" + number +
                 ", time_consume=" + time_consume +
-                ", tps=" + tps +
+                ", qps=" + qps +
                 '}';
     }
+
+
 }

@@ -21,7 +21,10 @@
 
 
 <body>
+
+
 <header th:fragment="header">
+
     <div class="layui-layout layui-layout-admin">
         <div class="layui-header">
             <div class="layui-logo layui-hide-xs layui-bg-black">
@@ -44,17 +47,12 @@
                         mongo
                     </a>
 
-                    <!-- 设置登录退出的地方 -->
-<!--                    <dl class="layui-nav-child">-->
-<!--                        <dd><a href="/about">个人小屋</a></dd>-->
-<!--                        <dd><a href="">退出</a></dd>-->
-<!--                    </dl>-->
-
                 </li>
             </ul>
         </div>
 
         <div class="layui-side layui-bg-black">
+
             <div class="layui-side-scroll "  >
                 <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
                 <ul class="layui-nav layui-nav-tree " lay-filter="test">
@@ -65,26 +63,20 @@
 
                         <dl class="layui-nav-child">
                             <dd><a href="/index">数据的冗余</a></dd>
-                            <dd><a href="/findPage">自动故障转移</a></dd>
-                            <dd><a href="/progress">写入测试</a></dd>
+                            <dd><a href="/failover">自动故障转移</a></dd>
+                            <dd><a href="/write">写入测试</a></dd>
+                            <dd><a href="/read">读取测试</a></dd>
                         </dl>
 
                     </li>
-
-<!--                    <li class="layui-nav-item">-->
-<!--                        &lt;!&ndash; 展开作用不加超链接&ndash;&gt;-->
-<!--                        <a href="javascript:;">数据分析</a>-->
-<!--                        <dl class="layui-nav-child">-->
-<!--                            <dd><a href="">年级</a></dd>-->
-<!--                            <dd><a href="">班级</a></dd>-->
-<!--                        </dl>-->
-<!--                    </li>-->
 
                 </ul>
             </div>
         </div>
     </div>
 </header>>
+
+
 </body>
 
 </html>

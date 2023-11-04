@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 
-    @GetMapping("/findPage")
-    public String findPage(){
+    @GetMapping("/failover")
+    public String failover(){
         return "failover.html";
     }
 
@@ -26,9 +26,14 @@ public class IndexController {
         return "index.html";
     }
 
-    @GetMapping("/progress")
-    public String progress(){
+    @GetMapping("/write")
+    public String write(){
         return "write.html";
+    }
+
+    @GetMapping("/read")
+    public String read(){
+        return "read.html";
     }
 
 

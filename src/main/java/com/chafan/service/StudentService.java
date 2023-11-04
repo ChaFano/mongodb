@@ -20,7 +20,7 @@ public interface StudentService {
      * 获取全部学生的数据信息
      * @return
      */
-    List<Student> getStudents();
+    double getStudents(int number);
 
     /**
      * 根据 数据库名 和 集合名称 查询数据
@@ -64,7 +64,8 @@ public interface StudentService {
      * 查询每个节点的数据总数
      * @return
      */
-    List<Node>  getCount();
+    List<Node> getCount();
+
 
 
 }

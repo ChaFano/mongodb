@@ -31,10 +31,9 @@ public class StudentController {
      * 查询副本集数据库中的 student 集合的所有数据
      * @return
      */
-    @GetMapping("/findStudentAll")
-    public R findStudentAll(){
-        return R.ok().setData(studentService.getStudents(),
-                Long.valueOf(studentService.getStudents().size()));
+    @GetMapping("/getStudents/{number}")
+    public R getStudents(@PathVariable int number){
+        return R.ok().setData(studentService.getStudents(number));
     }
 
     /**
@@ -95,6 +94,24 @@ public class StudentController {
     public R getCount(){
         return R.ok().setData( studentService.getCount());
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

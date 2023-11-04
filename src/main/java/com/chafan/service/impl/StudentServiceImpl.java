@@ -51,13 +51,19 @@ public class StudentServiceImpl implements StudentService {
      * 用于在 查询非 admin 数据库的其他信息
      */
     @Override
-    public List<Student> getStudents() {
+    public double getStudents(int number) {
+
+        Instant start = Instant.now();
 
         MongoTemplate template = new MongoTemplate(mongoClient, "db01");
-        // 使用动态MongoTemplate执行操作
-        List<Student> results = template.findAll(Student.class, "student");
+        Query query = new Query();
+        query.limit(number);
 
-        return results;
+        template.find(query,Student.class,"student");
+
+        Instant finish = Instant.now(); // 记录查询结束时间
+        Duration timeElapsed = Duration.between(start, finish);
+        return timeElapsed.toMillis()/1000.0;
     }
 
     @Override
@@ -67,6 +73,7 @@ public class StudentServiceImpl implements StudentService {
             return template.findAll(Student.class, "student");
         });
     }
+
 
     /**
      * 根据id 删除数据
@@ -84,6 +91,7 @@ public class StudentServiceImpl implements StudentService {
         return result.getDeletedCount() > 0 ? true : false;
     }
 
+
     /**
      * 根据 ip port database collectionName 查询指定节点是数据
      *
@@ -99,6 +107,7 @@ public class StudentServiceImpl implements StudentService {
         MongoTemplate template = new MongoTemplate(mongoClient, databaseName);
         return template.findAll(Object.class, collectionName);
     }
+
 
     /**
      * 随机插入文档数据 到指定数据库
@@ -151,8 +160,6 @@ public class StudentServiceImpl implements StudentService {
         return timeElapsed.getSeconds();
 
     }
-
-
 
     /**
      * 根据数据库和集合名查询数据
