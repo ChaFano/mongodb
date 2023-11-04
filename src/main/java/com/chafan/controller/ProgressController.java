@@ -4,16 +4,13 @@ import com.chafan.entity.Progress;
 import com.chafan.service.StudentService;
 import com.chafan.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -29,10 +26,10 @@ public class ProgressController {
     @Autowired
     StudentService studentService;
 
-//    @GetMapping("/computeProgress")
+    @GetMapping("/computeProgress")
     public R computeProgress() {
 
-        List<Long> list = Arrays.asList(1000L, 10000L, 100000L);
+        List<Long> list = Arrays.asList(1000L, 10000L, 100000L,300000L);
 
         List<Progress> collect = list.stream().map(item -> {
             Progress progress = new Progress();
@@ -48,12 +45,12 @@ public class ProgressController {
     }
 
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(4); // 根据需要设置合适的线程池大小
+    private final ExecutorService executor = Executors.newFixedThreadPool(6); // 根据需要设置合适的线程池大小
 
     @GetMapping("/computeProgress2")
     public R computeProgress2() {
 
-        List<Long> list = Arrays.asList(1000L, 10000L, 100000L,300000L);
+        List<Long> list = Arrays.asList(10000L, 100000L,300000L,1000000L,2000000L);
 
         List<CompletableFuture<Progress>> futures = list.stream()
                 .map(item -> CompletableFuture.supplyAsync(() -> {

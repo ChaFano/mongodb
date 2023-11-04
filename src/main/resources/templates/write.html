@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+    <header th:replace="header.html"></header>
+
+</head>
+
+<body class="layui-layout-body">
+
+    <div class="layui-body" style="margin:60px 0 0 10px ">
+
+
+
+<!--            <div class="layui-col-xs4">-->
+
+<!--                <h2>随机插入数据</h2>-->
+
+<!--                <div class="div_2">-->
+<!--                    <form class="layui-form " style="margin:40px 0px 0px 20px;">-->
+<!--                        <div class="layui-form-item">-->
+<!--                            <label class="layui-form-label">集合名称</label>-->
+<!--                            <div class="layui-input-inline">-->
+<!--                                <input type="text" name="number" id="number"  placeholder="请输入插入数量" autocomplete="off" class="layui-input">-->
+<!--                            </div>-->
+
+<!--                            <button class="layui-btn" id="addbtn" lay-submit lay-filter="addbtn">添加数据</button>-->
+<!--                            <button type="reset" class="layui-btn layui-btn-primary" >重置</button>-->
+
+
+<!--                        </div>-->
+
+<!--                        <div class="layui-form-item">-->
+
+<!--                            <table class="layui-hide" id="test" lay-filter='test'>-->
+
+<!--                            </table>-->
+<!--                            <div class="layui-input-block">-->
+
+<!--                            </div>-->
+<!--                        </div>-->
+
+
+
+<!--                    </form>-->
+<!--                </div>-->
+
+
+
+
+<!--            </div >-->
+
+            <div class="layui-form-item">
+
+
+                    <div class="layui-col-xs3">
+                        <div class="div_2">
+                            <h2>MySQL </h2>
+                            <table class="layui-hide" id="test1" lay-filter='test1'></table>
+
+                        </div>
+
+                    </div>
+
+                    <div class="layui-col-xs3">
+                        <div class="div_2">
+                            <h2>MongoDB </h2>
+                            <table class="layui-hide" id="test2" lay-filter='test2'></table>
+
+                        </div>
+                    </div>
+
+            </div>
+
+
+            <div class="layui-form-item">
+
+                    <div class="layui-col-xs3">
+                        <div class="div_2">
+                            <h2>MySQL 单侧</h2>
+                            <table class="layui-hide" id="test3" lay-filter='test3'></table>
+                         </div>
+                    </div>
+
+                    <div class="layui-col-xs3">
+                        <div class="div_2">
+                            <h2>MongoDB 单侧</h2>
+                            <table class="layui-hide" id="test4" lay-filter='test4'></table>
+
+                         </div>
+                    </div>
+            </div>
+
+
+    </div>
+
+</body>
+
+<style>
+
+    .div_2{
+        border: 2px solid #F0F0F0; /* 边框：2像素宽，实线，颜色为深灰色 */
+        background-color: #F8F8F8; /* 背景色为淡灰色 */
+        padding: 20px; /* 内边距为20像素，使内容远离边框 */
+        width: 90%;
+    }
+
+</style>
+
+<script type="text/javascript">
+    layui.use(function () {
+        var laytpl = layui.laytpl;
+        var $ = layui.$;
+        var layer = layui.layer;
+        var form = layui.form;
+        var table = layui.table;
+
+
+        form.on('submit(formDel)', function(data){
+
+            var collectionName = $.trim($("#collectionName1").val())
+            $.ajax({
+                url: '/api/node/deleteCollection',
+                type: 'POST',
+                data:{
+                    "collectionName": collectionName,
+                },
+                success:function(data){
+                    if(data.data == true){
+                        layer.msg("创建成功",function() {time:20000})
+                        window.parent.frames.location.href="/index"
+                    }
+                }
+            })
+            return false;
+        });
+
+
+        // 随机插入指定数量数据
+        form.on('submit(addbtn)', function(data){
+
+            var number = $.trim($("#number").val())
+            $.ajax({
+                url: '/api/student/batchSave/' +number,
+                type: 'GET',
+                success:function(data){
+                    if(data.data > 0){
+                        layer.msg("插入成功",function() {time:20000})
+
+                        location.reload(); // 刷新页面
+                    }
+                }
+            })
+            return false;
+        });
+
+
+
+        table.render({
+            elem: '#test',
+            id: 'tableId',
+            url: '/api/student/getCount',
+            method:'get',
+            title: '用户信息表',
+            totalRow: true,
+            height: 520,
+            width:550,
+            cols: [
+                [
+                    {type: "numbers", fixed: 'aa'}
+                    , {field: 'name', title: '节点', width: 300 }
+                    , {field: 'count', title: '文档数量', width: 100}
+
+                ]
+            ],
+            page: true , // 分页
+            elem: '#test',
+            limit:10,
+            parseData: function (res) {  // 分页效果必须要加这个函数只加 page:true 不起作用。
+                var result;
+                console.log(this);
+                console.log(JSON.stringify(res));
+                if (this.page.curr) {
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                } else {
+                    result = res.data.slice(0, this.limit);
+                }
+                return {"code": res.code, "msg": res.msg, "count": res.data.length, "data": result};
+            }
+
+        });
+
+        table.render({
+            elem: '#test1',
+            totalRow: true,
+
+            cols: [
+                [
+                    {type: "numbers", fixed: 'aa'}
+
+                    , {field: 'number', title: '样本数', width: 100}
+                    , {field: 'time_consume', title: '耗时', width: 100}
+                    , {field: 'tps', title: 'tps', width: 100}
+
+                ]
+            ],
+            data:[
+                {
+                    "number": "1w",
+                    "time_consume": 12,
+                    "tps": 833.0
+                },
+                {
+                    "number": "10w",
+                    "time_consume": 123,
+                    "tps": 813.0
+                },
+                {
+                    "number": "30w",
+                    "time_consume": 287,
+                    "tps": 1045.0
+                },
+                {
+                    "number": "100w",
+                    "time_consume": 475,
+                    "tps": 2105.0
+                },
+                {
+                    "number": "200w",
+                    "time_consume": 614,
+                    "tps": 3257.0
+                }
+            ],
+            page: true , // 分页
+            elem: '#test1',
+            limit:10,
+            parseData: function (res) {  // 分页效果必须要加这个函数只加 page:true 不起作用。
+                var result;
+                console.log(this);
+                console.log(JSON.stringify(res));
+                if (this.page.curr) {
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                } else {
+                    result = res.data.slice(0, this.limit);
+                }
+                return {"code": res.code, "msg": res.msg, "count": res.data.length, "data": result};
+            }
+
+        });
+
+
+        table.render({
+            elem: '#test2',
+            totalRow: true,
+
+            cols: [
+                [
+                    {type: "numbers", fixed: 'aa'}
+
+                    , {field: 'number', title: '样本数', width: 100}
+                    , {field: 'time_consume', title: '耗时', width: 100}
+                    , {field: 'tps', title: 'tps', width: 100}
+
+                ]
+            ],
+            data:[
+                {
+                    "number": "1w",
+                    "time_consume": 4,
+                    "tps": 2500.0
+                },
+                {
+                    "number": "10w",
+                    "time_consume": 83,
+                    "tps": 1204.0
+                },
+                {
+                    "number": "300w",
+                    "time_consume": 221,
+                    "tps": 1357.0
+                },
+                {
+                    "number": "100w",
+                    "time_consume": 440,
+                    "tps": 2272.0
+                },
+                {
+                    "number": "200w",
+                    "time_consume": 542,
+                    "tps": 3690.0
+                }
+            ],
+            page: true , // 分页
+            elem: '#test2',
+            limit:10,
+            parseData: function (res) {  // 分页效果必须要加这个函数只加 page:true 不起作用。
+                var result;
+                console.log(this);
+                console.log(JSON.stringify(res));
+                if (this.page.curr) {
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                } else {
+                    result = res.data.slice(0, this.limit);
+                }
+                return {"code": res.code, "msg": res.msg, "count": res.data.length, "data": result};
+            }
+
+        });
+
+        table.render({
+            elem: '#test4',
+            totalRow: true,
+
+            cols: [
+                [
+                    {type: "numbers", fixed: 'aa'}
+
+                    , {field: 'number', title: '样本数', width: 100}
+                    , {field: 'time_consume', title: '耗时', width: 100}
+                    , {field: 'tps', title: 'tps', width: 100}
+
+                ]
+            ],
+            data:[
+                {
+                    "number": "1w",
+                    "time_consume": 5,
+                    "tps": 2000.0
+                },
+                {
+                    "number": "10w",
+                    "time_consume": 37,
+                    "tps": 2702.0
+                },
+                {
+                    "number": "30w",
+                    "time_consume": 115,
+                    "tps": 2608.0
+                },
+                {
+                    "number": "100w",
+                    "time_consume": 262,
+                    "tps": 3816.0
+                },
+                {
+                    "number": "200w",
+                    "time_consume": 334,
+                    "tps": 5988.0
+                }
+            ],
+            page: true , // 分页
+            elem: '#test4',
+            limit:10,
+            parseData: function (res) {  // 分页效果必须要加这个函数只加 page:true 不起作用。
+                var result;
+                console.log(this);
+                console.log(JSON.stringify(res));
+                if (this.page.curr) {
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                } else {
+                    result = res.data.slice(0, this.limit);
+                }
+                return {"code": res.code, "msg": res.msg, "count": res.data.length, "data": result};
+            }
+
+        });
+
+
+        table.render({
+            elem: '#test3',
+            totalRow: true,
+
+            cols: [
+                [
+                    {type: "numbers", fixed: 'aa'}
+
+                    , {field: 'number', title: '样本数', width: 100}
+                    , {field: 'time_consume', title: '耗时', width: 100}
+                    , {field: 'tps', title: 'tps', width: 100}
+
+                ]
+            ],
+            data:[
+                {
+                    "number": "1w",
+                    "time_consume": 6,
+                    "tps": 1666.0
+                },
+                {
+                    "number": "10w",
+                    "time_consume": 77,
+                    "tps": 1298.0
+                },
+                {
+                    "number": "30w",
+                    "time_consume": 178,
+                    "tps": 1685.0
+                },
+                {
+                    "number": "100w",
+                    "time_consume": 283,
+                    "tps": 3533.0
+                },
+                {
+                    "number": "200w",
+                    "time_consume": 388,
+                    "tps": 5154.0
+                }
+            ],
+            page: true , // 分页
+            elem: '#test3',
+            limit:10,
+            parseData: function (res) {  // 分页效果必须要加这个函数只加 page:true 不起作用。
+                var result;
+                console.log(this);
+                console.log(JSON.stringify(res));
+                if (this.page.curr) {
+                    result = res.data.slice(this.limit * (this.page.curr - 1), this.limit * this.page.curr);
+                } else {
+                    result = res.data.slice(0, this.limit);
+                }
+                return {"code": res.code, "msg": res.msg, "count": res.data.length, "data": result};
+            }
+
+        });
+
+
+    });
+
+</script>
+
+</html>

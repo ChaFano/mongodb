@@ -28,7 +28,7 @@ public class IndexController {
 
     @GetMapping("/progress")
     public String progress(){
-        return "read-write.html";
+        return "write.html";
     }
 
 

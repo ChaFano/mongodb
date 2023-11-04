@@ -138,6 +138,7 @@ public class StudentServiceImpl implements StudentService {
         int chunkSize = studentList.size() / Count; // 计算每个线程处理的数据量
 
         for (int i = 0; i < Count; i++) {
+
             int start1 = i * chunkSize;
             int end = (i == Count - 1) ? studentList.size() : (i + 1) * chunkSize;
             List<Student> sublist = studentList.subList(start1, end);  // 每次截取 number/Count 条插入
