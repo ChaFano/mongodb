@@ -81,7 +81,9 @@ public class ProgressController {
 
 
     @GetMapping("/qps")
-    public R qps(){ List<Integer> list = Arrays.asList(10000, 100000,300000,1000000,2000000);
+    public R qps(){
+//        List<Integer> list = Arrays.asList(10000, 100000,300000,1000000,2000000);
+        List<Integer> list = Arrays.asList(1000000);
 
         List<CompletableFuture<Qps>> futures = list.stream()
                 .map(item -> CompletableFuture.supplyAsync(() -> {

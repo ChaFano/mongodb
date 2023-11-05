@@ -45,14 +45,11 @@ public class NodeInfoServiceController {
     public String url1;
     @Value("${connection.url2}")
     public String url2;
-    @Value("${connection.url3}")
-    public String url3;
     @Value("${connection.url4}")
     public String url4;
     @Value("${connection.url5}")
     public String url5;
-    @Value("${connection.url6}")
-    public String url6;
+
 
     /**
      * 查询副本集有各个节点的信息
@@ -111,15 +108,12 @@ public class NodeInfoServiceController {
         List<String> list = new ArrayList<>();
         list.add(url1);
         list.add(url2);
-        list.add(url3);
         list.add(url4);
         list.add(url5);
-        list.add(url6);
-
 
         List<DbTree> collect = list.stream().map(e -> {
             DbTree tree = new DbTree();
-            tree.setTitle(e.substring(e.length() - 5));
+            tree.setTitle("节点：" + e.substring(e.length() - 5));
             tree.setChildren(nodeInfoService.getNodeDatabases());
 
             return tree;

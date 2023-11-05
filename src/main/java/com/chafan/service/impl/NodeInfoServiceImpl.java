@@ -30,16 +30,6 @@ public class NodeInfoServiceImpl implements NodeInfoService {
 
     @Value("${connection.url1}")
     public String url1;
-    @Value("${connection.url2}")
-    public String url2;
-    @Value("${connection.url2}")
-    public String url3;
-    @Value("${connection.url4}")
-    public String url4;
-    @Value("${connection.url5}")
-    public String url5;
-    @Value("${connection.url6}")
-    public String url6;
 
 
     /**
@@ -130,7 +120,7 @@ public class NodeInfoServiceImpl implements NodeInfoService {
 
                     for (String collection : collections) {
                         DbTree dbTree = new DbTree();
-                        dbTree.setTitle(collection);
+                        dbTree.setTitle("集合：" +collection);
                         list.add(dbTree);
                     }
 
@@ -147,7 +137,6 @@ public class NodeInfoServiceImpl implements NodeInfoService {
 
         try {
 //          MongoClient mongoClient = MongoClients.create("mongodb://127.0.0.1:port");
-
             MongoClient mongoClient = MongoClients.create(url1);
             MongoTemplate template = new MongoTemplate(mongoClient, databaseName);
             template.createCollection(collectionName);
