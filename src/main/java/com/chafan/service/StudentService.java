@@ -14,6 +14,8 @@ import java.util.concurrent.CompletableFuture;
  * @date 2023/10/30 16:29
  * @Description
  */
+
+
 public interface StudentService {
 
     /**
@@ -29,8 +31,6 @@ public interface StudentService {
      * @return
      */
     List<Object> getDataByDbAndCollection(String dbName,String collectionName);
-
-    CompletableFuture<List<Student>> getStudentsAsync();
 
     /**
      * 根据 id 删除数据
@@ -59,13 +59,11 @@ public interface StudentService {
      */
     Long batchSave(Long number);
 
-
     /**
      * 查询每个节点的数据总数
      * @return
      */
     List<Node> getCount();
-
 
 
 }

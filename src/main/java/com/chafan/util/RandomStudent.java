@@ -2,6 +2,7 @@ package com.chafan.util;
 
 import com.chafan.entity.Course;
 import com.chafan.entity.Student;
+import com.chafan.entity.Student1;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -180,6 +181,36 @@ public class RandomStudent {
                 courseList.add(course);
             }
             student.setGrades(courseList);
+            students.add(student);
+        }
+        return students;
+    }
+
+    /**
+     * 随机生成学生信息
+     *
+     * @return
+     */
+    public static List<Student1> generateStudent2(Long num) {
+
+        Random random = new Random();
+        List<Student1> students = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            Student1 student = new Student1();
+            student.setName(generateName());
+            student.setAge(generateAge(18, 30));
+            student.setGender(RandomGender());
+            student.setStudent_id(generateStudentID());
+            student.setPhone_number(generatePhoneNumber());
+
+            List<Course> courseList = new ArrayList<>();
+            for (int j = 0; j < 5; j++) {
+                Course course = new Course();
+                course.setSubject(computerCourses[random.nextInt(computerCourses.length - 1)]);
+                course.setScore(gradeLevels[random.nextInt(gradeLevels.length - 1)]);
+                courseList.add(course);
+            }
+            student.setGrades(courseList.toString());
             students.add(student);
         }
         return students;

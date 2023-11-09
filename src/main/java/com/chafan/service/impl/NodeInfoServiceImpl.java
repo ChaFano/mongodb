@@ -92,14 +92,15 @@ public class NodeInfoServiceImpl implements NodeInfoService {
     }
 
 
+    /**
+     * 获取每个节点自己创建的数据库
+     * @return
+     */
     @Override
     public List<DbTree> getNodeDatabases() {
 
-
         Document result = mongoTemplate.executeCommand("{ listDatabases: 1 }");
-
         List<Document> databases = (List<Document>) result.get("databases");
-
 
         // 返回数据库名的列表
         return databases.stream()
@@ -130,8 +131,12 @@ public class NodeInfoServiceImpl implements NodeInfoService {
     }
 
 
-
-
+    /**
+     * 创建数据库和集合
+     * @param databaseName
+     * @param collectionName
+     * @return
+     */
     @Override
     public boolean createDbAndCollection(String databaseName, String collectionName) {
 
@@ -149,6 +154,11 @@ public class NodeInfoServiceImpl implements NodeInfoService {
         return false;
     }
 
+    /**
+     * 删除集合
+     * @param collectionName
+     * @return
+     */
     @Override
     public boolean deleteCollection(String collectionName) {
 

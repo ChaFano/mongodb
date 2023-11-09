@@ -26,6 +26,11 @@ public interface NodeInfoService {
      */
     List<DbTree> getAllDatabases();
 
+
+    /**
+     * 获取每个节点自己创建的数据库
+     * @return
+     */
     List<DbTree>  getNodeDatabases();
 
 

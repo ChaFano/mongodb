@@ -103,6 +103,10 @@ public class NodeInfoServiceController {
     }
 
 
+    /**
+     * 获取每个节点自己创建的数据库
+     * @return
+     */
     @PostMapping("/getNodeDatabases")
     public R getNodeDatabases(){
         List<String> list = new ArrayList<>();

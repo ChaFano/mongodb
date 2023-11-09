@@ -7,7 +7,7 @@ import java.util.Map;
  * @Auther: 茶凡
  * @ClassName R
  * @date 2023/10/30 10:58
- * @Description TODO
+ * @Description 返回给前端的 统一返回工具类
  */
 public class R extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;

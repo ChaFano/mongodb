@@ -27,8 +27,12 @@ public class ProgressController {
     @Autowired
     StudentService studentService;
 
+    /**
+     * 单线程的方式测试 TPS
+     * @return
+     */
     @GetMapping("/computeProgress")
-    public R computeProgress() {
+    public R tps1() {
 
         List<Long> list = Arrays.asList(1000L, 10000L, 100000L,300000L);
 
@@ -48,8 +52,12 @@ public class ProgressController {
 
     private final ExecutorService executor = Executors.newFixedThreadPool(6); // 根据需要设置合适的线程池大小
 
+    /**
+     * 多线程的方式 压力测试 TPS
+     * @return
+     */
     @GetMapping("/computeProgress2")
-    public R tps() {
+    public R tps2() {
 
         List<Long> list = Arrays.asList(10000L, 100000L,300000L,1000000L,2000000L);
 
@@ -79,6 +87,10 @@ public class ProgressController {
     }
 
 
+    /**
+     *  压力测试 QPS 测试
+     * @return
+     */
 
     @GetMapping("/qps")
     public R qps(){

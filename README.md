@@ -27,6 +27,12 @@ spring:
   data:
     mongodb:
       uri: mongodb://127.0.0.1:28011,127.0.0.1:28012,127.0.0.1:28013,127.0.0.1:28014,127.0.0.1:28015/admin?replicaSet=RPS_TEST1&slaveOk=true&write=1&readPreference=secondaryPreferred&connectTimeoutMS=300000
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/shanghai
+    username: root
+    password: 3306
 
 connection:
   url1: mongodb://127.0.0.1:28011
@@ -34,6 +40,14 @@ connection:
   url3: mongodb://127.0.0.1:28013
   url4: mongodb://127.0.0.1:28014
   url5: mongodb://127.0.0.1:28015
+
+
+
+mybatis-plus:
+  mapper-locations: classpath:com/chafan/*/mapper/xml/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 查看日志
+    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler #开启通用枚举支持，默认使用ordinalType
 
 ```
 

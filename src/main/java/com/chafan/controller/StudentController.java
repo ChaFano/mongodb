@@ -17,7 +17,7 @@ import java.util.concurrent.Executors;
  * @Auther: 茶凡
  * @ClassName StudentController
  * @date 2023/10/30 16:50
- * @Description TODO
+ * @Description 对学生集合的 CRUD
  */
 
 @RequestMapping("/api/student")
@@ -80,16 +80,21 @@ public class StudentController {
         return R.ok().setData(studentService.insertStudentRandom(number));
     }
 
-    @GetMapping("/getStudentsAsync")
-    public R getStudentsAsync(){
-        return R.ok().setData(studentService.getStudentsAsync());
-    }
 
+    /**
+     * 批量插入
+     * @param number
+     * @return
+     */
     @GetMapping("/batchSave/{number}")
     public R  batchSave(@PathVariable Long number){
         return R.ok().setData( studentService.batchSave(number));
     }
 
+    /**
+     * 获取及合中文档数量
+     * @return
+     */
     @GetMapping("/getCount")
     public R getCount(){
         return R.ok().setData( studentService.getCount());

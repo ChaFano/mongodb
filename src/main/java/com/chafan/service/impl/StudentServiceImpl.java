@@ -66,13 +66,7 @@ public class StudentServiceImpl implements StudentService {
         return timeElapsed.toMillis()/1000.0;
     }
 
-    @Override
-    public CompletableFuture<List<Student>> getStudentsAsync() {
-        return CompletableFuture.supplyAsync(() -> {
-            MongoTemplate template = new MongoTemplate(mongoClient, "db01");
-            return template.findAll(Student.class, "student");
-        });
-    }
+
 
 
     /**
