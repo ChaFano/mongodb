@@ -5,7 +5,40 @@ MongoDB副本集是将数据同步在多个服务器的过程。
 复制提供了数据的冗余备份，并在多个服务器上存储数据副本，提高了数据的可用性， 并可以保证数据的安全性。
 
 复制还允许您从硬件故障和服务中断中恢复数据。
-`特点归纳为:数据冗余、故障自动转移、读写分离，在本文中主要做了前两个和 mongodb 与 mysql 的性能测试`
+`特点归纳为:数据冗余、故障自动转移、读写分离，在本文中主要做了前两个和 mongodb 与 mysql 的读写性能测试`
+
+## yml 配置文件
+这里只给出例子，启动项目的话需要按照自己的需求配置，将本地的ip换成你自己mongodb 服务器的地址。
+```yml
+server:
+  port: 8081
+
+spring:
+  thymeleaf:
+    cache: false
+    servlet:
+      content-type: text/html
+    mode: LEGACYHTML5
+  mvc:
+    static-path-pattern: /static/**
+    view:
+      prefix: classpath:/templates
+      suffix: .html
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:28011,127.0.0.1:28012,127.0.0.1:28013,127.0.0.1:28014,127.0.0.1:28015/admin?replicaSet=RPS_TEST1&slaveOk=true&write=1&readPreference=secondaryPreferred&connectTimeoutMS=300000
+
+connection:
+  url1: mongodb://127.0.0.1:28011
+  url2: mongodb://127.0.0.1:28012
+  url3: mongodb://127.0.0.1:28013
+  url4: mongodb://127.0.0.1:28014
+  url5: mongodb://127.0.0.1:28015
+
+```
+
+## 测试结果解释
+下文中图标中的结果是通过postman 请求接口得到的，不是在网页上自动获取取得的，因为网页上测试时间有点长，不易展示出效果来。
 
 ## 副本集搭建
 
@@ -21,10 +54,12 @@ MongoDB副本集是将数据同步在多个服务器的过程。
 
 ## 验证结果
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/914c3de593d24929816251436796d153.png#pic_center)
-![在这里插入图片描述](https://img-blog.csdnimg.cn/469e762509774b35811b1a7806d1adb7.png#pic_center)
-
-
+<div>
+<image src="https://img-blog.csdnimg.cn/914c3de593d24929816251436796d153.png#pic_center"/>
+</div>
+  <div>
+<image src="https://img-blog.csdnimg.cn/469e762509774b35811b1a7806d1adb7.png#pic_center"/>
+</div>
 
 ## 源码地址
 
