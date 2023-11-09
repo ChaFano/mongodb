@@ -1,46 +1,34 @@
-# mongodb
+@[TOC](MongoDB副本集特点验证)
 
-该项目旨在验证 MongoDB 中的一些知识点，这里主要是验证副本集，实现高可用的数据验证。
+## mogodb副本集概述
 
-<div>
-<image src="https://img-blog.csdnimg.cn/1520c79d76e74d5496998ed23c17c403.png#pic_center"/>
-</div>
+MongoDB副本集是将数据同步在多个服务器的过程。
+
+复制提供了数据的冗余备份，并在多个服务器上存储数据副本，提高了数据的可用性， 并可以保证数据的安全性。
+
+复制还允许您从硬件故障和服务中断中恢复数据。
+`特点归纳为:数据冗余、故障自动转移、读写分离，在本文中主要做了前两个和 mongodb 与 mysql 的性能测试`
 
 ## 副本集搭建
 
+副本集环境搭建过程这里不过多赘述，已经有很多博主都写过了，这里放了一个github的wiki 地址，需要的可以查看。
 <a href="https://github.com/ChaFano/mongodb/wiki/MongDB%E5%89%AF%E6%9C%AC%E9%9B%86%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">MongDB副本集环境搭建</a>
 
+## 副本集结构
 
-## yml文件配置
-
-这里的yml文件里面配置副本集环境搭建的服务器地址，需要新建并配置，在系统中需要获取副本集的一些配置信息需要在 admin 数据库下操作。
-
-replicaSet=RPS_TEST1 这里是副本集名称，搭建副本集环境的时候定义的。
-
-```javascript
-
-server:
-  port: 8081
-
-spring:
-  thymeleaf:
-    cache: false
-    servlet:
-      content-type: text/html
-    mode: LEGACYHTML5
-  mvc:
-    static-path-pattern: /static/**
-    view:
-      prefix: classpath:/templates
-      suffix: .html
-  data:
-    mongodb:
-      uri: mongodb://127.0.0.1:28011,127.0.0.1:28012,127.0.0.1:28013,127.0.0.1:28014/admin?replicaSet=RPS_TEST1&slaveOk=true&write=1&readPreference=secondaryPreferred&connectTimeoutMS=300000
-
-connection:
-  url: mongodb://127.0.0.1:28011
-
-```
+<div>
+<image src="https://img-blog.csdnimg.cn/b0789ea2ae884b18803faf63ff25ce8a.png#pic_center"/>
+</div>
 
 
+## 验证结果
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/914c3de593d24929816251436796d153.png#pic_center)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/469e762509774b35811b1a7806d1adb7.png#pic_center)
+
+
+
+## 源码地址
+
+>https://github.com/ChaFano/mongodb.git
 
