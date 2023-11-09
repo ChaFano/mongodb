@@ -1,5 +1,3 @@
-@[TOC](MongoDB副本集特点验证)
-
 ## mogodb副本集概述
 
 MongoDB副本集是将数据同步在多个服务器的过程。
